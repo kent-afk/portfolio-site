@@ -1,0 +1,20 @@
+.sys-back {
+  --sys-back-accent: var(--or);--sys-back-bg: rgba(8, 8, 6, .82);--sys-back-color: rgba(244, 241, 234, .65);display:flex;align-items:center;gap:7px;padding:0 16px 0 10px;font-family:var(--font-mono);font-size:8px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;white-space:nowrap;background:var(--sys-back-bg);color:var(--sys-back-color);border:none;border-left:3px solid var(--sys-back-accent);cursor:pointer;transition:transform var(--ui-mid),border-color var(--ui-mid),background var(--ui-mid),color var(--ui-mid)}
+.sys-back--fixed {
+  position:fixed;top:16px;left:16px;z-index:200;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.sys-back--inline {
+  position:static;flex:0 0 auto;align-self:stretch;border-left:none;border-right:3px solid var(--sys-back-accent);padding:0 16px}
+.sys-back:hover {
+  transform:translate(-3px);color:var(--wh)}
+.sys-back--fixed:hover {
+  background:#080806f5;border-color:var(--sys-back-accent)}
+.sys-back--inline:hover {
+  opacity:.82}
+.sys-back__arrow {
+  font-size:9px;color:var(--sys-back-accent);transition:transform var(--ui-mid);display:inline-block;flex-shrink:0}
+.sys-back:hover .sys-back__arrow {
+  transform:translate(-2px)}
+.sys-back__label {
+  display:inline-block}
+.sys-back:focus-visible {
+  outline:2px solid var(--sys-back-accent);outline-offset:3px}

@@ -1,0 +1,52 @@
+:root {
+  --bk: #080806;--bk2: #0e0e0c;--wh: #F4F1EA;--or: #FF5500;--or2: #CC3D00;--gr: #AAFF00;--re: #BB1010;--bl: #1122CC;--mu: rgba(244,241,234,.18);--mu2: rgba(244,241,234,.06);--font-display: "Barlow Condensed", Impact, "Arial Black", sans-serif;--font-mono: "DM Mono", "Courier New", monospace;--font-body: "Barlow Condensed", system-ui, sans-serif;--ui-fast: .12s ease;--ui-mid: .22s cubic-bezier(.22,1,.36,1);--ui-slow: .4s cubic-bezier(.22,1,.36,1)}
+*,*:before,*:after {
+  box-sizing:border-box;margin:0;padding:0}
+html,body,#root {
+  width:100%;height:100%}
+body {
+  background:var(--bk);color:var(--wh);font-family:var(--font-display);overflow:hidden;cursor:none}
+@media(pointer:coarse) {
+  body {
+  cursor:auto}
+#cursor-dot {
+  display:none!important}
+a,button,[data-hover] {
+  cursor:pointer}
+}
+.screen {
+  position:relative;width:100vw;height:100vh;height:100dvh;overflow:hidden}
+.screen>video.bg-video {
+  position:absolute;top:0;right:0;bottom:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0}
+#cursor-dot {
+  position:fixed;z-index:9999;pointer-events:none;width:10px;height:10px;background:var(--or);transform:translate(-50%,-50%) rotate(45deg);transition:width var(--ui-fast),height var(--ui-fast),background var(--ui-fast)}
+#cursor-dot.hovering {
+  width:6px;height:6px;background:var(--wh)}
+*:focus {
+  outline:none}
+*:focus-visible {
+  outline:2px solid var(--or);outline-offset:3px}
+input:focus-visible,textarea:focus-visible,select:focus-visible {
+  outline:1px solid var(--or);outline-offset:0}
+.scanlines {
+  position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none;z-index:2;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.055) 3px,rgba(0,0,0,.055) 4px)}
+.halftone {
+  position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none;z-index:2;background-image:radial-gradient(circle,rgba(0,0,0,.2) 1.2px,transparent 1.2px);background-size:9px 9px}
+.stripe-r {
+  position:absolute;right:0;top:0;bottom:0;width:5px;background:var(--or);z-index:20;pointer-events:none}
+.stripe-r2 {
+  position:absolute;right:9px;top:0;bottom:0;width:2px;background:#ff550038;z-index:20;pointer-events:none}
+@media(prefers-reduced-motion:reduce) {
+  *,*:before,*:after {
+  animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+html {
+  scroll-behavior:auto}
+}
+.trans-slash {
+  position:fixed;top:-8vh;left:0;width:110vw;height:116vh;clip-path:polygon(0 0,100% 0,calc(100% - 80px) 100%,0 100%);transform-origin:left center}
+.trans-about {
+  position:fixed;height:28vh;clip-path:polygon(0 0,100% 0,calc(100% - 110px) 100%,0 100%);transform:rotate(-18deg);transform-origin:left center}
+.trans-vert {
+  position:fixed;top:-6vh;height:112vh;transform:skew(-16deg);transform-origin:top}
+.trans-default {
+  position:fixed;top:0;right:0;bottom:0;left:0;transform-origin:left center}
