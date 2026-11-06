@@ -30,14 +30,36 @@ export function initAudioToggle() {
   ].join(";");
 
   sound.setEnabled(enabled);
-  updateButton(btn, enabled);
+  updateButton(btn, enabled, sound.playing);
+  setTimeout(() => updateButton(btn, enabled, sound.playing), 1200);
+
+  // Do not let the global "first gesture starts music" handler fire before
+  // this button decides whether to play or mute.
+  btn.addEventListener("pointerdown", (event) => event.stopPropagation());
+  btn.addEventListener("keydown", (event) => event.stopPropagation());
 
   btn.addEventListener("click", () => {
-    enabled = !enabled;
-    sound.setEnabled(enabled);
+    if (!enabled) {
+      enabled = true;
+      sound.setEnabled(true);
+      sound.ensurePlaying();
+    } else if (!sound.playing) {
+      // Autoplay was blocked or the track is paused: the first click starts
+      // the music instead of muting it.
+      sound.ensurePlaying();
+    } else {
+      enabled = false;
+      sound.setEnabled(false);
+    }
     try { localStorage.setItem("ak.audio.enabled", String(enabled)); } catch { /* private mode */ }
-    updateButton(btn, enabled);
+    updateButton(btn, enabled, sound.playing);
+    setTimeout(() => updateButton(btn, enabled, sound.playing), 700);
   });
+
+  // If music starts from a click elsewhere on the page, update the icon.
+  document.addEventListener("pointerdown", () => {
+    setTimeout(() => updateButton(btn, enabled, sound.playing), 900);
+  }, { passive: true });
 
   document.body.appendChild(btn);
   return btn;
@@ -48,11 +70,12 @@ function readAudioPreference() {
   catch { return true; }
 }
 
-function updateButton(btn, enabled) {
-  btn.textContent = enabled ? "♪" : "✕";
-  btn.style.color = enabled ? "rgba(244,241,234,0.5)" : "rgba(244,241,234,0.18)";
-  btn.setAttribute("aria-label", enabled ? "Mute audio" : "Unmute audio");
-  btn.title = enabled ? "Mute audio" : "Unmute audio";
+function updateButton(btn, enabled, playing = false) {
+  const active = enabled && playing;
+  btn.textContent = !enabled ? "✕" : active ? "♪" : "▶";
+  btn.style.color = active ? "rgba(244,241,234,0.7)" : enabled ? "rgba(244,241,234,0.5)" : "rgba(244,241,234,0.18)";
+  btn.setAttribute("aria-label", !enabled ? "Unmute audio" : active ? "Mute audio" : "Play music");
+  btn.title = !enabled ? "Unmute audio" : active ? "Mute audio" : "Play music";
 }
 
 export default initAudioToggle;

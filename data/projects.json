@@ -1,1 +1,67 @@
-[]
+[
+  {
+    "id": "ai-telegram-assistant",
+    "title": "AI Telegram Assistant",
+    "desc": "Cloud-deployed AI assistant with study/translate/summarize modes, PostgreSQL dialog history, OpenRouter fallback, Docker Compose and Yandex Cloud provisioning. 65 pytest tests. Private repo — available on request.",
+    "lang": "Python",
+    "period": "Oct 2026",
+    "repo": "",
+    "private": true,
+    "image": "assets/projects/ai-telegram-assistant.webp",
+    "tags": ["Python", "aiogram", "PostgreSQL", "Docker", "Yandex Cloud", "CI"],
+    "featured": true
+  },
+  {
+    "id": "metal-roll-warehouse-api",
+    "title": "Metal Roll Warehouse API",
+    "desc": "REST API with 5 endpoints, combined filters, 15 warehouse statistics, EF Core, PostgreSQL/SQLite, Docker Compose and 11 xUnit tests.",
+    "lang": "C#",
+    "period": "2026",
+    "repo": "https://github.com/kent-afk/rolls-storage-cs",
+    "image": "assets/projects/metal-roll-warehouse.webp",
+    "tags": ["ASP.NET Core", "EF Core", "PostgreSQL", "Docker", "xUnit"],
+    "featured": true
+  },
+  {
+    "id": "cloud-manager-identity",
+    "title": "Cloud Manager — Identity Microservice",
+    "desc": "Identity service with JWT, BCrypt, CQRS/MediatR, EF Core/PostgreSQL and RabbitMQ domain events. In progress: Docker Compose, integration tests and gateway routing.",
+    "lang": "C#",
+    "period": "2026",
+    "repo": "https://github.com/kent-afk/cloud-manager",
+    "image": "assets/projects/cloud-manager-identity.webp",
+    "tags": ["Microservices", "JWT", "RabbitMQ", "MediatR", "PostgreSQL"],
+    "featured": true
+  },
+  {
+    "id": "corporate-message-distribution",
+    "title": "Corporate Message Distribution System",
+    "desc": "C#/.NET 8 messaging system with topics, importance filters, archiving, banned-word notifications, console/file output and logging. 20 xUnit tests.",
+    "lang": "C#",
+    "period": "2026",
+    "repo": "https://github.com/kent-afk/Corporate-Message-Distribution-System",
+    "tags": [".NET 8", "SOLID", "GoF", "xUnit"],
+    "featured": false
+  },
+  {
+    "id": "eve-mining-colony-simulator",
+    "title": "EVE Mining & Colony Simulator",
+    "desc": "Domain model of EVE Online mining contracts and colony production: fleets, ore reprocessing, CPU/Power constraints, recipes and 17 xUnit tests. Private course repo.",
+    "lang": "C#",
+    "period": "2026",
+    "repo": "",
+    "private": true,
+    "tags": ["C#", "Domain modeling", "xUnit"],
+    "featured": false
+  },
+  {
+    "id": "transport-route-simulator",
+    "title": "Transport Route Simulator",
+    "desc": "Maglev route simulator with composable path segments, iterative Newtonian physics, typed result objects and 14 xUnit tests.",
+    "lang": "C#",
+    "period": "2026",
+    "repo": "https://github.com/kent-afk/Transport-Route-Simulator",
+    "tags": ["C#", "OOP", "xUnit"],
+    "featured": false
+  }
+]

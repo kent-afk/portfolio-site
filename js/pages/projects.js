@@ -1,4 +1,5 @@
 import { sound } from "../sound.js";
+import { esc, parseDeck, safeUrl } from "../ui.js";
 
 // PROJECTS — a read-only project deck published from the repository.
 // The deck is driven entirely by `data/projects.json`: the page fetches that
@@ -12,7 +13,7 @@ const DATA_URL = "data/projects.json";
 const GH_USER = "kent-afk";
 const GH_REPO = "portfolio-site";
 const GH_URL = `https://github.com/${GH_USER}`;
-const GH_DATA = `https://github.com/${GH_USER}/${GH_REPO}/blob/main/${DATA_URL}`;
+const GH_DATA = `https://github.com/${GH_USER}/${GH_REPO}/blob/gh-pages/${DATA_URL}`;
 const RESUME_ROUTE = "#/resume";
 
 const LANG_COLORS = {
@@ -34,59 +35,9 @@ const LANG_COLORS = {
 
 /* ------------------------------- helpers ------------------------------- */
 
-function esc(value) {
-  return String(value ?? "").replace(/[&<>"']/g, (c) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;",
-  }[c]));
-}
-
-function safeUrl(value, { image = false } = {}) {
-  const raw = String(value || "").trim();
-  if (!raw) return "";
-
-  if (image && /^data:image\//i.test(raw)) return raw;
-  if (/^(https?:\/\/|mailto:)/i.test(raw)) return raw;
-  if (/^#\//.test(raw)) return raw;
-  if (/^(\/|\.{1,2}\/|assets\/)/.test(raw)) return raw;
-  if (/^[\w.-]+\.[a-z]{2,}(\/|$)/i.test(raw)) return `https://${raw}`;
-  return "";
-}
-
 function splitTitle(title) {
   const first = String(title).trim().split(/\s+/)[0] || "";
   return `<em>${esc(first)}</em>${esc(String(title).slice(first.length))}`;
-}
-
-function normalizeProject(raw, index) {
-  const p = raw && typeof raw === "object" ? raw : {};
-  const tags = Array.isArray(p.tags)
-    ? p.tags
-    : String(p.tags || "").split(",");
-  return {
-    id: String(p.id || `p-${index}`),
-    title: String(p.title || "").trim(),
-    desc: String(p.desc || p.description || "").trim(),
-    lang: String(p.lang || p.language || "").trim(),
-    period: String(p.period || "").trim(),
-    url: String(p.url || "").trim(),
-    repo: String(p.repo || "").trim(),
-    image: String(p.image || "").trim(),
-    tags: tags.map((t) => String(t).trim()).filter(Boolean).slice(0, 10),
-    featured: Boolean(p.featured),
-  };
-}
-
-function parseDeck(raw) {
-  const parsed = JSON.parse(raw);
-  const list = Array.isArray(parsed) ? parsed : parsed && parsed.projects;
-  if (!Array.isArray(list)) throw new Error("invalid shape");
-  return list
-    .map(normalizeProject)
-    .filter((p) => p.title);
 }
 
 /* -------------------------------- page -------------------------------- */
@@ -134,13 +85,9 @@ export default function projects(ctx) {
     <a class="ps-head-act" href="${RESUME_ROUTE}" data-hover="true">RESUME</a>
     <a class="ps-head-act" href="${GH_URL}" target="_blank" rel="noopener noreferrer" data-hover="true">GITHUB ↗</a>`;
 
-  const idxEl = document.createElement("span");
-  idxEl.className = "ps-idx";
-
   head.appendChild(backBtn);
   head.appendChild(headC);
   head.appendChild(headActions);
-  head.appendChild(idxEl);
 
   /* ---------- scroll body ---------- */
   const scroll = document.createElement("div");
@@ -153,14 +100,9 @@ export default function projects(ctx) {
       <span class="bar"></span>
       <span>MY PROJECTS</span>
       <span class="ps-sec-rule"></span>
-      <span class="ps-sec-n">00</span>
     </div>
     <div class="ps-tools">
       <span class="ps-store"><span class="ps-store-dot"></span>DECK · SYNCED FROM REPOSITORY</span>
-      <div class="ps-tool-actions">
-        <a class="ps-btn ps-btn--ghost" href="${GH_DATA}" target="_blank" rel="noopener noreferrer" data-hover="true">DATA FILE ↗</a>
-        <a class="ps-btn ps-btn--ghost" href="${GH_URL}" target="_blank" rel="noopener noreferrer" data-hover="true">@${GH_USER} ↗</a>
-      </div>
     </div>
     <div class="ps-load" hidden>
       <span class="ps-load-num" aria-hidden="true">··</span>
@@ -178,17 +120,17 @@ export default function projects(ctx) {
       </div>
     </div>
     <div class="ps-zone ps-zone--feat" hidden>
-      <div class="ps-sub-h"><span>★ FEATURED</span><span class="ps-sec-rule"></span><span class="ps-sec-n ps-count-feat">00</span></div>
+      <div class="ps-sub-h"><span>★ FEATURED</span><span class="ps-sec-rule"></span></div>
       <div class="ps-grid ps-grid--feat"></div>
     </div>
     <div class="ps-zone ps-zone--all" hidden>
-      <div class="ps-sub-h"><span class="ps-all-title">ALL PROJECTS</span><span class="ps-sec-rule"></span><span class="ps-sec-n ps-count-all">00</span></div>
+      <div class="ps-sub-h"><span class="ps-all-title">ALL PROJECTS</span><span class="ps-sec-rule"></span></div>
       <div class="ps-grid ps-grid--repo"></div>
     </div>
     <div class="ps-empty" hidden>
       <span class="ps-empty-num" aria-hidden="true">00</span>
       <span class="ps-empty-kicker">PERSONAL PROJECT DECK</span>
-      <h2 class="ps-empty-title">YOUR DECK IS <em>EMPTY</em></h2>
+      <h2 class="ps-empty-title">DECK IS <em>EMPTY</em></h2>
       <p class="ps-empty-copy">Projects are published from the repository: add an entry to <a href="${GH_DATA}" target="_blank" rel="noopener noreferrer">data/projects.json</a>, commit and push. The deck rebuilds itself on every visit — no editing happens in the browser.</p>
       <div class="ps-empty-actions">
         <a class="ps-btn ps-btn--primary" href="${GH_DATA}" target="_blank" rel="noopener noreferrer" data-hover="true">OPEN DATA FILE ↗</a>
@@ -228,9 +170,6 @@ export default function projects(ctx) {
   const emptyEl = section.querySelector(".ps-empty");
   const loadEl = section.querySelector(".ps-load");
   const errEl = section.querySelector(".ps-err");
-  const countEl = section.querySelector(".ps-sec-n");
-  const countFeatEl = section.querySelector(".ps-count-feat");
-  const countAllEl = section.querySelector(".ps-count-all");
   const allTitleEl = section.querySelector(".ps-all-title");
   const progFill = head.querySelector(".ps-prog-f");
   const statusTxt = status.querySelector(".ps-st-txt");
@@ -245,7 +184,7 @@ export default function projects(ctx) {
       : "No description yet.";
     const tags = project.tags.map((t) => `<span>${esc(t)}</span>`).join("");
     const live = safeUrl(project.url);
-    const repo = safeUrl(project.repo);
+    const repo = project.private ? "" : safeUrl(project.repo);
     const openLink = live || repo;
     const image = safeUrl(project.image, { image: true });
     const period = project.period ? `<span class="ps-card-period">${esc(project.period)}</span>` : "";
@@ -253,13 +192,13 @@ export default function projects(ctx) {
     const card = document.createElement("article");
     card.className = "ps-card" + (project.featured ? " ps-card--feat" : "");
     card.dataset.id = project.id;
+    card.tabIndex = -1;
     card.setAttribute("role", "group");
     card.setAttribute("aria-label", project.title);
-    card.style.setProperty("--tilt", ((hash(project.title) % 5) - 2) * 0.7 + "deg");
+    if (openLink) card.dataset.href = openLink;
     card.style.setProperty("--lc", color);
     card.innerHTML = `
       ${image ? `<span class="ps-card-thumb"><img src="${esc(image)}" alt="" loading="lazy"></span>` : ""}
-      <span class="ps-card-num">${seq}</span>
       <span class="ps-card-lang">${esc(lang)}</span>
       <h3 class="ps-card-title">${splitTitle(project.title)}</h3>
       ${period}
@@ -268,6 +207,7 @@ export default function projects(ctx) {
       <div class="ps-card-meta">
         <span class="ps-card-flag">${project.featured ? "★ FEATURED" : `PROJECT ${seq}`}</span>
         <div class="ps-card-actions">
+          ${project.private ? `<span class="ps-card-private" title="Private repository">PRIVATE</span>` : ""}
           ${openLink ? `<a class="ps-card-open" href="${esc(openLink)}" target="_blank" rel="noopener noreferrer" data-act="open" data-hover="true">OPEN ↗</a>` : ""}
           ${repo && repo !== openLink ? `<a class="ps-card-repo" href="${esc(repo)}" target="_blank" rel="noopener noreferrer" data-act="open" data-hover="true">REPO ↗</a>` : ""}
         </div>
@@ -275,7 +215,9 @@ export default function projects(ctx) {
 
     const img = card.querySelector(".ps-card-thumb img");
     if (img) {
-      img.addEventListener("error", () => img.closest(".ps-card-thumb")?.remove());
+      img.addEventListener("error", () => {
+        img.closest(".ps-card-thumb")?.remove();
+      });
     }
     return card;
   }
@@ -314,9 +256,6 @@ export default function projects(ctx) {
     });
 
     allTitleEl.textContent = featured.length ? "PROJECT ARCHIVE" : "ALL PROJECTS";
-    countEl.textContent = String(projects.length).padStart(2, "0");
-    countFeatEl.textContent = String(featured.length).padStart(2, "0");
-    countAllEl.textContent = String(rest.length).padStart(2, "0");
 
     if (!projects.length) {
       index = 0;
@@ -339,17 +278,16 @@ export default function projects(ctx) {
     });
   }
 
-  function select(i) {
+  function select(i, quiet = false) {
     if (!cards.length || i < 0 || i >= cards.length) return;
     if (i === index) return;
-    sound.play("tick");
+    if (!quiet) sound.play("tick");
     index = i;
     selectedId = cards[i].project.id;
     applySelection();
   }
 
   function applySelection() {
-    const total = String(projects.length).padStart(2, "0");
     const hasCards = cards.length > 0;
 
     cards.forEach((c, i) => {
@@ -361,7 +299,6 @@ export default function projects(ctx) {
 
     if (!hasCards) {
       progFill.style.width = "0%";
-      idxEl.innerHTML = `00<em>/</em>00`;
       statusTxt.textContent =
         state === "error" ? "SYNC ERROR — CHECK DATA FILE"
         : projects.length ? "SYNCED · 00 PROJECTS"
@@ -370,7 +307,6 @@ export default function projects(ctx) {
     }
 
     progFill.style.width = `${((index + 1) / cards.length) * 100}%`;
-    idxEl.innerHTML = `${String(index + 1).padStart(2, "0")}<em>/</em>${total}`;
     statusTxt.textContent = "SYNCED · " + cards[index].project.title.toUpperCase();
   }
 
@@ -383,7 +319,6 @@ export default function projects(ctx) {
     errEl.hidden = true;
     zoneFeat.hidden = true;
     zoneAll.hidden = true;
-    countEl.textContent = "00";
     statusTxt.textContent = "SYNCING DECK…";
 
     try {
@@ -402,7 +337,6 @@ export default function projects(ctx) {
       errEl.hidden = false;
       statusTxt.textContent = "SYNC ERROR — CHECK DATA FILE";
       progFill.style.width = "0%";
-      idxEl.innerHTML = `00<em>/</em>00`;
     }
   }
 
@@ -421,6 +355,13 @@ export default function projects(ctx) {
 
     const cardEl = event.target.closest(".ps-card");
     if (!cardEl) return;
+    if (cardEl.dataset.href) {
+      const at = cards.findIndex((c) => c.project.id === cardEl.dataset.id);
+      if (at >= 0) select(at, true);
+      sound.play("confirm");
+      window.open(cardEl.dataset.href, "_blank", "noopener,noreferrer");
+      return;
+    }
     const project = projects.find((p) => p.id === cardEl.dataset.id);
     if (!project) return;
     const at = cards.findIndex((c) => c.project.id === project.id);
@@ -429,17 +370,45 @@ export default function projects(ctx) {
 
   /* ------------------------------- boot -------------------------------- */
 
+  function onKeydown(event) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      sound.play("back");
+      navigate("/");
+      return;
+    }
+    if (!cards.length) return;
+    const key = event.key;
+    if (key !== "ArrowLeft" && key !== "ArrowRight" && key !== "ArrowUp" && key !== "ArrowDown") return;
+    if (event.target.closest("input, textarea, select, [contenteditable='true']")) return;
+    event.preventDefault();
+    const columns = Math.max(1, getComputedStyle(cards[0].el.parentElement).gridTemplateColumns.split(/\s+/).length);
+    const step = key === "ArrowLeft" ? -1 : key === "ArrowRight" ? 1 : key === "ArrowUp" ? -columns : columns;
+    const next = Math.min(cards.length - 1, Math.max(0, index + step));
+    select(next);
+    cards[next].el.focus({ preventScroll: true });
+    cards[next].el.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }
+
+  function onEnter(event) {
+    if (event.key !== "Enter" || !cards.length) return;
+    if (event.target.closest("a, button")) return;
+    const href = cards[index]?.el.dataset.href;
+    if (!href) return;
+    event.preventDefault();
+    sound.play("confirm");
+    window.open(href, "_blank", "noopener,noreferrer");
+  }
+
+  document.addEventListener("keydown", onKeydown);
+  document.addEventListener("keydown", onEnter);
+
   load();
   sound.soundtrackEnter();
 
   return () => {
     dead = true;
+    document.removeEventListener("keydown", onKeydown);
+    document.removeEventListener("keydown", onEnter);
   };
-}
-
-/* Deterministic pseudo-random so a card tilts the same way on every visit. */
-function hash(str) {
-  let h = 9;
-  for (let i = 0; i < String(str).length; i++) h = Math.imul(h ^ String(str).charCodeAt(i), 387420489);
-  return (h ^ (h >>> 9)) >>> 0;
 }

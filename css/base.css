@@ -1,5 +1,5 @@
 :root {
-  --bk: #080806;--bk2: #0e0e0c;--wh: #F4F1EA;--or: #FF5500;--or2: #CC3D00;--gr: #AAFF00;--re: #BB1010;--bl: #1122CC;--mu: rgba(244,241,234,.18);--mu2: rgba(244,241,234,.06);--font-display: "Barlow Condensed", Impact, "Arial Black", sans-serif;--font-mono: "DM Mono", "Courier New", monospace;--font-body: "Barlow Condensed", system-ui, sans-serif;--ui-fast: .12s ease;--ui-mid: .22s cubic-bezier(.22,1,.36,1);--ui-slow: .4s cubic-bezier(.22,1,.36,1)}
+  --bk: #080806;--bk2: #0e0e0c;--wh: #F4F1EA;--or: #FF5500;--or2: #CC3D00;--gr: #AAFF00;--re: #BB1010;--bl: #1122CC;--mu: rgba(244,241,234,.18);--mu2: rgba(244,241,234,.06);--font-display: "Roboto Condensed", Impact, "Arial Black", sans-serif;--font-mono: "IBM Plex Mono", "Courier New", monospace;--font-body: "Roboto Condensed", system-ui, sans-serif;--ui-fast: .12s ease;--ui-mid: .22s cubic-bezier(.22,1,.36,1);--ui-slow: .4s cubic-bezier(.22,1,.36,1)}
 *,*:before,*:after {
   box-sizing:border-box;margin:0;padding:0}
 html,body,#root {
@@ -19,7 +19,7 @@ a,button,[data-hover] {
 .screen>video.bg-video {
   position:absolute;top:0;right:0;bottom:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0}
 #cursor-dot {
-  position:fixed;z-index:9999;pointer-events:none;width:10px;height:10px;background:var(--or);transform:translate(-50%,-50%) rotate(45deg);transition:width var(--ui-fast),height var(--ui-fast),background var(--ui-fast)}
+  position:fixed;top:0;left:0;z-index:9999;pointer-events:none;width:10px;height:10px;background:var(--or);transform:translate3d(-100px,-100px,0) translate(-50%,-50%) rotate(45deg);will-change:transform;transition:width var(--ui-fast),height var(--ui-fast),background var(--ui-fast)}
 #cursor-dot.hovering {
   width:6px;height:6px;background:var(--wh)}
 *:focus {

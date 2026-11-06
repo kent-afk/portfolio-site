@@ -68,6 +68,7 @@ const VARIANTS = {
 };
 
 let overlay = null;
+let transitionSeq = 0;
 function getOverlay() {
   if (!overlay) {
     overlay = document.createElement("div");
@@ -84,6 +85,12 @@ function getOverlay() {
  * @returns {Promise<void>} resolves when the wipe has finished
  */
 export function playTransition(variant = "home") {
+  const runId = ++transitionSeq;
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+    if (overlay) overlay.innerHTML = "";
+    return Promise.resolve();
+  }
+
   const spec = VARIANTS[variant] || VARIANTS.home;
   const host = getOverlay();
   host.innerHTML = "";
@@ -113,7 +120,7 @@ export function playTransition(variant = "home") {
   });
 
   return Promise.all(anims.map((a) => a.finished.catch(() => {}))).then(() => {
-    host.innerHTML = "";
+    if (runId === transitionSeq) host.innerHTML = "";
   });
 }
 

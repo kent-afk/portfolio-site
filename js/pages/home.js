@@ -2,7 +2,7 @@ import { sound } from "../sound.js";
 
 // HOME — Persona-style skewed main menu with triangle selection highlight.
 
-const BG = "assets/file.svg";
+const BG = "assets/file.webp";
 
 const NAV_ITEMS = [
   { id: "projects", label: "PROJECTS", page: "projects", fontSize: 92, offsetX: 0, offsetY: 0, skewX: -8, skewY: 6 },
@@ -12,7 +12,7 @@ const NAV_ITEMS = [
 
 const LINK_ITEMS = [
   { id: "github", label: "GITHUB", href: "https://github.com/kent-afk", fontSize: 52, offsetX: 8, offsetY: 4, skewX: -5, skewY: 4 },
-  { id: "linkedin", label: "LINKEDIN", href: "https://www.linkedin.com/in/alexander-korenchuk-93a1353bb/", fontSize: 52, offsetX: 18, offsetY: 2, skewX: -9, skewY: -4 },
+  { id: "linkedin", label: "LINKEDIN", href: "https://www.linkedin.com/in/alexander-k-93a1353bb/", fontSize: 52, offsetX: 18, offsetY: 2, skewX: -9, skewY: -4 },
   { id: "email", label: "EMAIL", href: "mailto:a.Korenchuk2026@outlook.com", fontSize: 52, offsetX: 12, offsetY: 3, skewX: -4, skewY: 6 },
 ];
 
@@ -106,6 +106,7 @@ export default function home(ctx) {
 
     const labelBright = document.createElement("span");
     labelBright.className = "menu-label menu-label-bright";
+    labelBright.setAttribute("aria-hidden", "true");
     labelBright.style.fontSize = item.fontSize + "px";
     labelBright.style.clipPath = shape;
     labelBright.textContent = item.label;
@@ -131,7 +132,8 @@ export default function home(ctx) {
     const refs = { a, tri, hl, wrap, badge, item, index, isLink };
     rows.push(refs);
 
-    a.addEventListener("mouseenter", () => select(index));
+    a.addEventListener("mouseenter", () => { select(index); focusRow(index); });
+    a.addEventListener("focus", () => select(index));
     a.addEventListener("click", (e) => {
       if (!isLink) {
         e.preventDefault();
@@ -212,17 +214,34 @@ export default function home(ctx) {
     apply();
   }
 
+  function focusRow(i) {
+    rows[i]?.a.focus({ preventScroll: true });
+  }
+
   apply();
+
+  function onKeydown(event) {
+    const key = event.key;
+    if (key !== "ArrowUp" && key !== "ArrowDown" && key !== "ArrowLeft" && key !== "ArrowRight") return;
+    if (document.querySelector(".intro")) return;
+    if (event.target.closest("input, textarea, select, [contenteditable='true']")) return;
+    event.preventDefault();
+    const dir = key === "ArrowUp" || key === "ArrowLeft" ? -1 : 1;
+    const next = (index + dir + items.length) % items.length;
+    select(next);
+    focusRow(next);
+  }
+  document.addEventListener("keydown", onKeydown);
 
   const mountTimer = setTimeout(() => {
     rows.forEach((r) => r.a.classList.add("mounted"));
     sep.classList.add("mounted");
   }, 900);
 
-  const trackTimer = setTimeout(() => sound.soundtrackEnter(), 400);
+  sound.soundtrackEnter();
 
   return () => {
     clearTimeout(mountTimer);
-    clearTimeout(trackTimer);
+    document.removeEventListener("keydown", onKeydown);
   };
 }

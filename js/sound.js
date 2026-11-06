@@ -2,7 +2,8 @@
 // Reverse-engineered from the reference: every cue is generated with
 // oscillators/noise buffers, no audio files required for the effects.
 
-const SOUNDTRACK = "assets/menu-soundtrack.opus";
+const SOUNDTRACK_OPUS = "assets/menu-soundtrack.opus";
+const SOUNDTRACK_MP3 = "assets/menu-soundtrack.mp3";
 const TRACK_VOLUME = 0.22;
 const FADE_IN_MS = 2200;
 const FADE_OUT_MS = 1400;
@@ -18,16 +19,20 @@ class SoundEngine {
     this._lastPlayed = {};
     this._COOLDOWN = {
       tick: 30,
-      whoosh: 80,
       confirm: 200,
-      open: 160,
       close: 160,
       back: 200,
-      glitch: 60,
       reveal: 200,
     };
     this._onGesture = this._onGesture.bind(this);
-    document.addEventListener("pointerdown", this._onGesture, { once: true });
+    this._gestureTypes = ["pointerdown", "touchstart", "keydown", "wheel"];
+    this._armGesture();
+  }
+
+  _armGesture() {
+    this._gestureTypes.forEach((type) =>
+      document.addEventListener(type, this._onGesture, { once: true, passive: true })
+    );
   }
 
   _ctx_get() {
@@ -39,25 +44,35 @@ class SoundEngine {
   }
 
   _onGesture() {
+    this._gestureTypes.forEach((type) => document.removeEventListener(type, this._onGesture));
     const ctx = this._ctx_get();
     if (ctx.state === "suspended") ctx.resume();
-    if (this._inMenuZone && this._track && this._track.paused) this._startTrack();
-    document.addEventListener("pointerdown", this._onGesture, { once: true });
+    // A click can land before the page's 400 ms soundtrack timer, so create
+    // the track here too instead of wasting that first gesture.
+    if (this._inMenuZone && (!this._track || this._track.paused)) this.ensurePlaying();
+    this._armGesture();
   }
 
   _ensureTrack() {
     if (this._track) return;
     const el = new Audio();
-    el.src = SOUNDTRACK;
+    el.src = el.canPlayType('audio/ogg; codecs="opus"') ? SOUNDTRACK_OPUS : SOUNDTRACK_MP3;
     el.loop = true;
     el.preload = "auto";
     el.volume = 0;
+    el.addEventListener("error", () => {
+      if (!el.src.endsWith(".opus")) return;
+      el.src = SOUNDTRACK_MP3;
+      el.load();
+      if (this._inMenuZone && this._enabled) this._startTrack();
+    }, { once: true });
     this._track = el;
   }
 
   _startTrack() {
     if (!this._track || !this._enabled) return;
     clearInterval(this._trackFade);
+    this._track.muted = false;
     if (this._track.paused) {
       this._track.play().catch(() => {});
     }
@@ -94,16 +109,7 @@ class SoundEngine {
   soundtrackEnter() {
     this._inMenuZone = true;
     this._ensureTrack();
-    if (this._enabled && (this._track.paused || this._track.volume <= 0)) this._startTrack();
-  }
-
-  soundtrackLeave() {
-    this._inMenuZone = false;
-    if (this._track) {
-      this._fadeOutTrack(() => {
-        if (this._track && !this._inMenuZone) this._track.pause();
-      });
-    }
+    if (this._enabled) this._startTrack();
   }
 
   setEnabled(enabled) {
@@ -119,9 +125,14 @@ class SoundEngine {
     return this._enabled;
   }
 
-  setVolume(v) {
-    this._vol = Math.max(0, Math.min(1, v));
-    if (this._track && !this._track.paused) this._track.volume = TRACK_VOLUME * this._vol;
+  get playing() {
+    return !!this._track && !this._track.paused && this._track.readyState >= 2;
+  }
+
+  ensurePlaying() {
+    this._inMenuZone = true;
+    this._ensureTrack();
+    if (this._enabled) this._startTrack();
   }
 
   _canPlay(name) {
@@ -188,29 +199,6 @@ class SoundEngine {
     this._noise(0.06, 0.04, 3000, 2);
   }
 
-  _sfx_whoosh() {
-    this._noise(0.14, 0.07, 2200, 0.8);
-    this._tone(220, 0.06, 0.08, "sawtooth");
-  }
-
-  _sfx_open() {
-    const ctx = this._ctx_get();
-    if (ctx.state === "suspended") ctx.resume();
-    const t = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    const g = ctx.createGain();
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(240, t);
-    osc.frequency.linearRampToValueAtTime(380, t + 0.18);
-    g.gain.setValueAtTime(0, t);
-    g.gain.linearRampToValueAtTime(0.18 * this._vol, t + 0.04);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
-    osc.connect(g);
-    g.connect(ctx.destination);
-    osc.start(t);
-    osc.stop(t + 0.24);
-  }
-
   _sfx_close() {
     const ctx = this._ctx_get();
     if (ctx.state === "suspended") ctx.resume();
@@ -233,11 +221,6 @@ class SoundEngine {
     setTimeout(() => this._tone(220, 0.1, 0.1, "sine"), 35);
   }
 
-  _sfx_glitch() {
-    this._noise(0.18, 0.03, 6000, 3);
-    this._tone(1200, 0.08, 0.04, "square");
-  }
-
   _sfx_reveal() {
     this._tone(180, 0.2, 0.35, "sine", 0.04);
     setTimeout(() => this._tone(270, 0.1, 0.25, "sine", 0.02), 80);
@@ -248,11 +231,8 @@ class SoundEngine {
     switch (name) {
       case "tick": return this._sfx_tick();
       case "confirm": return this._sfx_confirm();
-      case "whoosh": return this._sfx_whoosh();
-      case "open": return this._sfx_open();
       case "close": return this._sfx_close();
       case "back": return this._sfx_back();
-      case "glitch": return this._sfx_glitch();
       case "reveal": return this._sfx_reveal();
     }
   }

@@ -1,6 +1,6 @@
 import { sound } from "../sound.js";
 
-// ABOUT — "ABOUT ME": section bars that reveal a paper panel.
+// ABOUT - "ABOUT ME": section bars that reveal a paper panel.
 
 const BG = "assets/aboutMenu-eyip1OQR.webp";
 // Portrait per section, order matches SECTIONS. Images sit in the right-hand
@@ -8,19 +8,19 @@ const BG = "assets/aboutMenu-eyip1OQR.webp";
 const PORTRAITS = [
   "assets/tributo-gl-BvztE6HA.webp",
   "assets/canciones-qLwBa15B.webp",
-  "assets/itmo.jpg",
+  "assets/itmo.webp",
   "assets/collage-fanzine-BoR6POle.webp",
   "assets/soy-culpable-DOzNpZNe.webp",
-  "assets//BnQ5NQqf.webp",
+  "assets/BnQ5NQqf.webp",
 ];
 
 const SECTIONS = [
   {
     id: "profile", label: "PROFILE", role: "01", color: "#BB1010",
-    stats: [{ tag: "FOCUS", value: "BACKEND", color: "#BB1010" }, { tag: "METHOD", value: "CLEAN CODE", color: "#FF5500" }],
+    stats: [{ tag: "FOCUS", value: "BACKEND", color: "#BB1010" }, { tag: "METHOD", value: "END-TO-END", color: "#FF5500" }],
     content: {
       title: "PROFILE",
-      body: "Backend and Cloud Engineering student at ITMO University, building production-ready services with C#, ASP.NET Core and .NET 8. I care about clean architecture, explicit boundaries and automated tests — the parts that keep systems easy to change after the first release.\n\nCurrently looking for a backend internship where I can ship real features with an experienced team.",
+      body: "Backend student at ITMO who likes taking a feature from a blank repository to a running service. My current toolkit is C#, ASP.NET Core and Python, with PostgreSQL for data and Docker/Yandex Cloud for deployment. I care about clear boundaries, useful tests and boring, reliable releases.\n\nI’m looking for a backend internship where I can own small tasks end to end and learn from a strong engineering team.",
     },
   },
   {
@@ -28,7 +28,7 @@ const SECTIONS = [
     stats: [{ tag: "PHILOSOPHY", value: "CLARITY", color: "#FF5500" }, { tag: "DRIVE", value: "CURIOSITY", color: "#FF7A22" }],
     content: {
       title: "ABOUT ME",
-      body: "I am Alexander, a software engineering student based in Saint Petersburg. I like systems that make sense: clear layers, readable code, tests that prove behaviour and containers that make an environment reproducible.\n\nMost of my work starts with a small question — how should this boundary work? — and grows into a project: a REST API, a message distribution system, a route simulator, a vision experiment. I learn by building the whole thing, documenting the trade-offs and then making it a little better.\n\nI am open to relocation and ready to contribute to a high-impact backend team.",
+      body: "I’m Alexander, a software engineering student in Saint Petersburg. I started with C++ and small desktop projects, then moved into backend work because I enjoy the part users never see: business rules, persistence, failure handling and deployment.\n\nMy recent project is an AI assistant deployed on Yandex Cloud. It has real infrastructure behind it — a VM, private network, security group, Docker Compose, health checks and CI — not just a chat demo. I also built a warehouse REST API and a C# messaging system with 20 tests.\n\nOutside code, I’m into powerlifting, music and comics. I like finishing things: understand the problem, build the smallest useful version, test it, write a clear README and ship.",
     },
   },
   {
@@ -36,15 +36,15 @@ const SECTIONS = [
     stats: [{ tag: "UNIVERSITY", value: "ITMO", color: "#3355FF" }, { tag: "GRADUATION", value: "2029", color: "#AAFF00" }],
     content: {
       title: "EDUCATION",
-      body: "ITMO UNIVERSITY\nB.S. in Software Engineering — Saint Petersburg, Russia\nExpected graduation: June 2029\n\nConcentrations: Backend and Cloud Engineering\n\nRelated coursework:\nData Structures & Algorithms · Objects & Design · Computer Organization & Programming · Combinatorics · Discrete Math · DBMS · Object-Oriented Programming · Statistics & Applications",
+      body: "ITMO UNIVERSITY\nB.S. in Software Engineering - Saint Petersburg, Russia\nExpected graduation: June 2029\n\nConcentrations: Backend and Cloud Engineering\n\nRelated coursework:\nData Structures & Algorithms · DBMS · OOP · Computer Organization · Software Design",
     },
   },
   {
     id: "experience", label: "EXPERIENCE", role: "04", color: "#AAFF00",
-    stats: [{ tag: "PROJECTS", value: "04", color: "#AAFF00" }, { tag: "TESTS", value: "34+", color: "#88DD00" }],
+    stats: [{ tag: "PROJECTS", value: "06", color: "#AAFF00" }, { tag: "TESTS", value: "127", color: "#88DD00" }],
     content: {
       title: "PRACTICAL EXPERIENCE",
-      body: "METAL ROLL WAREHOUSE API\n3-layer clean architecture REST API with 5 endpoints, 13 statistical metrics, Swagger documentation and Docker-based persistence.\n\nENTERPRISE MESSAGE DISTRIBUTION SYSTEM\n.NET 8 messaging system built with four structural design patterns and 20 xUnit tests passing at 100%.\n\nTRANSPORT ROUTE SIMULATOR\nDriverless maglev route simulation with iterative Newtonian physics and 14 xUnit tests across 8 route configurations.\n\nMOTION TRACKER\nReal-time hand gesture recognition with MediaPipe hand landmarks and OpenCV at live webcam frame rate.\n\nSelf-directed project work, built end to end and documented on GitHub.",
+      body: "AI TELEGRAM ASSISTANT\nAI assistant deployed to Yandex Cloud: VM, VPC, security group, Docker Compose, health checks and CI. Python, PostgreSQL, OpenRouter, 65 pytest tests. Private repo available on request.\n\nMETAL ROLL WAREHOUSE API\nREST API with 5 endpoints, 15 warehouse statistics, EF Core, PostgreSQL/SQLite, Docker Compose and 11 xUnit tests. Public repo: kent-afk/rolls-storage-cs.\n\nCORPORATE MESSAGE DISTRIBUTION SYSTEM\n.NET 8 messaging system built with four structural design patterns and 20 xUnit tests. Public repo: kent-afk/Corporate-Message-Distribution-System.\n\nALSO IN THE DECK\nCloud Manager - identity microservice (in progress), EVE Mining & Colony Simulator (private), Transport Route Simulator.",
     },
   },
   {
@@ -52,7 +52,7 @@ const SECTIONS = [
     stats: [{ tag: "LANGUAGES", value: "C# · SQL · PY", color: "#db1398" }, { tag: "TOOLS", value: ".NET · DOCKER", color: "#00e1ff" }],
     content: {
       title: "SKILLS & COMPETENCIES",
-      body: "PROGRAMMING\nC# · SQL · Python · C++ · C · Qt · Entity Framework · .NET 8+ · ASP.NET Core · SignalR · NSubstitute\n\nTOOLS & PLATFORMS\nGit · Linux · Docker · PostgreSQL · Azure Data Studio · Rider · Swagger/OpenAPI · GitHub Actions · CI/CD · RabbitMQ\n\nFOCUS\nClean Architecture · SOLID · Automated Testing (xUnit) · REST APIs · Containerization",
+      body: "LANGUAGES\nC# · SQL · Python · C++ · C\n\nBACKEND\nASP.NET Core · .NET 8 · EF Core · REST APIs · LINQ · async/await\n\nPYTHON\naiogram · asyncpg · aiohttp\n\nCLOUD & DEVOPS\nYandex Cloud · Docker · Docker Compose · GitHub Actions · Linux · SSH\n\nDATA & TESTING\nPostgreSQL · SQLite · xUnit · pytest · NSubstitute\n\nARCHITECTURE & TOOLS\nClean Architecture · SOLID · GoF · Git · Swagger/OpenAPI",
     },
   },
   {
@@ -60,7 +60,7 @@ const SECTIONS = [
     stats: [{ tag: "BELIEF", value: "SIMPLICITY", color: "#fffb00" }, { tag: "MISSION", value: "SHIP", color: "#FF7A22" }],
     content: {
       title: "MANIFEST",
-      body: "Before a system works, someone has to imagine how it fails.\n\nThat is where I like to work: at the boundary between an idea and something that survives contact with real traffic, real data and real deadlines. A good backend is not the one with the most abstractions. It is the one whose seams are visible, whose failures are typed, and whose next change does not require a rewrite.\n\nI believe in simple architecture, tests that speak plainly, documentation that respects the reader, and shipping in small, verifiable steps.\n\nI want to build software that keeps its promises.",
+      body: "The best code I wrote this year was the code that made a failure boring: a fallback model when the first one hit a 429, a health check that stopped a bad deploy, a test that caught a broken contract. I like working at that level — where a small design choice saves an hour of debugging later.\n\nI don’t chase patterns for their own sake. I use them when they make the next change easier. I’d rather have a short service I understand than an impressive diagram I can’t deploy.\n\nRight now I’m learning to build reliable backend systems — and I’m ready to help a team ship them.",
     },
   },
 ];
@@ -70,10 +70,12 @@ export default function about(ctx) {
 
   const screen = document.createElement("div");
   screen.className = "screen about-screen";
-  screen.style.backgroundImage = `url(${BG})`;
-  screen.style.backgroundSize = "cover";
-  screen.style.backgroundPosition = "center";
-  screen.style.backgroundRepeat = "no-repeat";
+
+  const bg = document.createElement("div");
+  bg.className = "about-bg";
+  bg.setAttribute("aria-hidden", "true");
+  bg.style.backgroundImage = `url(${BG})`;
+  screen.appendChild(bg);
 
   const scan = document.createElement("div");
   scan.className = "scanlines";
@@ -102,7 +104,11 @@ export default function about(ctx) {
   SECTIONS.forEach((s, a) => {
     const outer = document.createElement("div");
     outer.className = "about-bar-outer";
+    outer.setAttribute("role", "button");
+    outer.setAttribute("tabindex", "0");
     outer.setAttribute("aria-label", s.label);
+    outer.setAttribute("aria-haspopup", "dialog");
+    outer.setAttribute("aria-controls", "about-reveal-panel");
     outer.dataset.hover = "true";
     outer.style.setProperty("--bar-color", s.color);
     outer.style.pointerEvents = "all";
@@ -158,7 +164,24 @@ export default function about(ctx) {
     bars.appendChild(outer);
 
     outer.addEventListener("click", () => reveal(a));
-    outer.addEventListener("mouseenter", () => { if (!open) setIndex(a); });
+    outer.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        reveal(a);
+      }
+    });
+    outer.addEventListener("mouseenter", () => {
+      if (open) return;
+      barRefs.forEach((b) => b.outer.classList.remove("hover-focus"));
+      outer.classList.add("hover-focus");
+      setIndex(a);
+      focusBar(a, true);
+    });
+    outer.addEventListener("focus", () => {
+      if (open) return;
+      if (!hoverFocusActive) barRefs.forEach((b) => b.outer.classList.remove("hover-focus"));
+      setIndex(a);
+    });
 
     barRefs.push({ outer, role, label, stats: [...stats.querySelectorAll(".about-stat-val")] });
   });
@@ -171,6 +194,7 @@ export default function about(ctx) {
 
   const revealPanel = document.createElement("div");
   revealPanel.className = "about-reveal";
+  revealPanel.id = "about-reveal-panel";
   revealPanel.setAttribute("role", "dialog");
   revealPanel.setAttribute("aria-modal", "true");
   revealPanel.setAttribute("aria-labelledby", "about-reveal-title");
@@ -203,15 +227,63 @@ export default function about(ctx) {
   root.appendChild(screen);
 
   let index = 0;
+  let hoverFocusActive = false;
   let open = false;
+  let opener = null;
+
+  function onDialogKeydown(event) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      if (open) close();
+      else goBack();
+      return;
+    }
+    if (open) {
+      if (event.key !== "Tab") return;
+      const focusables = [...revealPanel.querySelectorAll(
+        'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+      )].filter((el) => el.getClientRects().length > 0);
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement;
+      if (event.shiftKey) {
+        if (active === first || !revealPanel.contains(active)) {
+          event.preventDefault();
+          last.focus();
+        }
+      } else if (active === last || !revealPanel.contains(active)) {
+        event.preventDefault();
+        first.focus();
+      }
+      return;
+    }
+    if (event.key !== "ArrowUp" && event.key !== "ArrowDown" && event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    if (event.target.closest("input, textarea, select, [contenteditable='true']")) return;
+    event.preventDefault();
+    const dir = event.key === "ArrowUp" || event.key === "ArrowLeft" ? -1 : 1;
+    const next = (index + dir + SECTIONS.length) % SECTIONS.length;
+    barRefs.forEach((b) => b.outer.classList.remove("hover-focus"));
+    setIndex(next);
+    focusBar(next);
+  }
+  document.addEventListener("keydown", onDialogKeydown);
+  window.addEventListener("resize", applyBars);
+  document.fonts?.ready.then(() => { if (document.body.contains(screen)) applyBars(); });
 
   function applyBars() {
     barRefs.forEach((b, a) => {
       const isActive = a === index;
       b.outer.classList.toggle("active", isActive);
       b.role.style.color = isActive ? SECTIONS[a].color : "rgba(255,255,255,.15)";
-      b.label.style.color = isActive ? "#0a0a08" : "rgba(255,255,255,.8)";
+      b.label.style.color = isActive ? "#ffffff" : "rgba(255,255,255,.8)";
       b.stats.forEach((sv) => { sv.style.color = isActive ? "#0a0a08" : "#fff"; });
+      if (isActive) {
+        const barRect = b.outer.getBoundingClientRect();
+        const labelRect = b.label.getBoundingClientRect();
+        const cut = barRect.width ? ((labelRect.right - barRect.left + 12) / barRect.width) * 100 : 24;
+        b.outer.style.setProperty("--cut", `${Math.min(72, Math.max(18, cut)).toFixed(2)}%`);
+      }
     });
   }
 
@@ -221,9 +293,19 @@ export default function about(ctx) {
     applyBars();
   }
 
+  function focusBar(i, fromHover = false) {
+    const bar = barRefs[i]?.outer;
+    if (!bar) return;
+    hoverFocusActive = fromHover;
+    bar.focus({ preventScroll: true });
+    hoverFocusActive = false;
+  }
+
   function reveal(i) {
     sound.play("reveal");
+    opener = barRefs[i]?.outer || document.activeElement;
     index = i;
+    barRefs.forEach((b) => b.outer.classList.remove("hover-focus"));
     applyBars();
     open = true;
     const s = SECTIONS[i];
@@ -253,23 +335,26 @@ export default function about(ctx) {
       void el.offsetWidth;
       el.classList.add("mounted");
     });
+    closeBtn.focus({ preventScroll: true });
   }
 
   function close() {
     if (!open) return;
     sound.play("close");
     open = false;
+    const returnTo = opener;
+    opener = null;
     bars.classList.remove("bars-disabled");
     dim.style.display = "none";
     revealPanel.style.display = "none";
     portrait.style.display = "none";
     backBtn.textContent = "BACK";
     closeBtn.style.display = "none";
+    if (returnTo) returnTo.focus({ preventScroll: true });
   }
 
   function goBack() {
     if (open) {
-      sound.play("close");
       close();
     } else {
       sound.play("back");
@@ -289,5 +374,7 @@ export default function about(ctx) {
 
   return () => {
     clearTimeout(mountTimer);
+    document.removeEventListener("keydown", onDialogKeydown);
+    window.removeEventListener("resize", applyBars);
   };
 }

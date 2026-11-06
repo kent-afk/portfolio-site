@@ -1,0 +1,100 @@
+/* Entry gate: one deliberate click so the browser allows the soundtrack. */
+
+.intro {
+  position:fixed;top:0;right:0;bottom:0;left:0;z-index:100;
+  display:grid;place-items:center;overflow:hidden;
+  background:var(--bk);color:var(--wh);
+  transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)}
+.intro.is-out {
+  opacity:0;transform:scale(1.03);pointer-events:none}
+
+.intro__bg {
+  position:absolute;top:-2%;right:-2%;bottom:-2%;left:-2%;
+  background:url("../assets/file.webp") center/cover no-repeat;
+  opacity:.38;filter:saturate(.75) contrast(1.05);transform:scale(1.02)}
+.intro:before {
+  content:"";position:absolute;top:0;right:0;bottom:0;left:0;z-index:1;
+  background:radial-gradient(ellipse 72% 62% at 50% 44%,rgba(8,8,6,.5),#080806 78%)}
+.intro:after {
+  content:"";position:absolute;top:0;right:0;bottom:0;left:0;z-index:2;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.08) 3px,rgba(0,0,0,.08) 4px)}
+
+.intro__hud {
+  position:absolute;top:18px;right:24px;left:24px;z-index:3;
+  display:flex;justify-content:space-between;gap:20px;
+  font-family:var(--font-mono);font-size:8px;letter-spacing:.24em;text-transform:uppercase;
+  color:#ffffff66;pointer-events:none}
+.intro__hud--right {
+  justify-content:flex-end}
+
+.intro__center {
+  position:relative;z-index:3;width:min(940px,100%);padding:24px;text-align:center;
+  animation:intro-rise .8s cubic-bezier(.22,1,.36,1) both}
+@keyframes intro-rise {
+  from {
+  opacity:0;transform:translateY(18px)}
+  to {
+  opacity:1;transform:translateY(0)}
+}
+
+.intro__kicker {
+  display:block;margin-bottom:18px;font-family:var(--font-mono);
+  font-size:9px;letter-spacing:.34em;text-transform:uppercase;color:var(--or)}
+.intro__name {
+  margin:0;font-family:var(--font-display);font-weight:900;font-style:italic;
+  font-size:clamp(48px,8.4vw,124px);line-height:.82;letter-spacing:-.02em;
+  text-transform:uppercase;color:var(--wh)}
+.intro__name em {
+  font-style:normal;color:var(--or)}
+.intro__role {
+  margin-top:14px;font-family:var(--font-display);font-size:clamp(16px,1.8vw,22px);
+  line-height:1.1;letter-spacing:.02em;text-transform:uppercase;color:#f4f1ead9}
+
+.intro__enter {
+  margin-top:34px;display:inline-flex;align-items:center;justify-content:center;gap:12px;
+  padding:16px 30px;background:var(--or);color:#080806;border:1px solid var(--or);
+  font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;cursor:pointer;transform:skewX(-8deg);
+  transition:background var(--ui-fast),color var(--ui-fast),border-color var(--ui-fast),transform var(--ui-fast)}
+.intro__enter:hover,.intro__enter:focus-visible {
+  background:var(--wh);border-color:var(--wh);color:#080806;transform:skewX(-8deg) translateY(-2px)}
+.intro__enter:focus-visible {
+  outline:2px solid var(--wh);outline-offset:4px}
+.intro__enter span {
+  font-size:14px;line-height:1}
+.intro__enter .intro__tap {
+  display:none}
+
+.intro__note {
+  margin-top:18px;font-family:var(--font-mono);font-size:8px;letter-spacing:.18em;
+  text-transform:uppercase;color:#ffffff80}
+.intro__note i {
+  display:inline-block;width:5px;height:5px;margin-right:7px;
+  background:var(--gr);transform:rotate(45deg);vertical-align:1px}
+
+.intro__foot {
+  position:absolute;right:24px;bottom:20px;left:24px;z-index:3;
+  display:flex;justify-content:space-between;gap:16px;
+  font-family:var(--font-mono);font-size:7.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:#ffffff59;pointer-events:none}
+
+@media(hover:none) {
+  .intro__enter .intro__click {
+  display:none}
+.intro__enter .intro__tap {
+  display:inline}
+}
+@media(max-width:600px) {
+  .intro__hud {
+  top:14px;right:16px;left:16px;font-size:7px}
+.intro__center {
+  padding:20px 16px}
+.intro__enter {
+  margin-top:28px;padding:14px 22px;font-size:10px}
+.intro__note {
+  font-size:7px}
+.intro__foot {
+  right:16px;bottom:16px;left:16px;font-size:6.5px}
+.intro__foot span:last-child {
+  display:none}
+}

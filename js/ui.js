@@ -1,42 +1,52 @@
-import { sound } from "./sound.js";
+// Small shared helpers used by the detail pages.
 
-// Small shared UI helpers used by the detail pages.
-
-export function el(tag, className, html) {
-  const node = document.createElement(tag);
-  if (className) node.className = className;
-  if (html != null) node.innerHTML = html;
-  return node;
+export function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  }[c]));
 }
 
-/**
- * Back button (mirrors the reference `sys-back` component).
- * @param {object} opts
- * @param {string} opts.to       route to navigate to
- * @param {string} [opts.label]  visible label (default PROJECTS)
- * @param {boolean} [opts.fixed] fixed positioning (default true)
- * @param {object} [opts.navigate]
- * @param {string} [opts.accentColor]
- * @param {string} [opts.bg]
- * @param {string} [opts.color]
- */
-export function backButton(opts) {
-  const { to = "/projects", label = "PROJECTS", fixed = true, navigate, accentColor, bg, color } = opts;
-  const btn = document.createElement("button");
-  btn.className = `sys-back${fixed ? " sys-back--fixed" : " sys-back--inline"}`;
-  btn.dataset.hover = "true";
-  btn.setAttribute("aria-label", `Back to ${label.toLowerCase()}`);
-  if (accentColor) btn.style.setProperty("--sys-back-accent", accentColor);
-  if (bg) btn.style.setProperty("--sys-back-bg", bg);
-  if (color) btn.style.setProperty("--sys-back-color", color);
-  btn.innerHTML = `<span class="sys-back__arrow" aria-hidden="true">◄</span><span class="sys-back__label">${label}</span>`;
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    sound.play("back");
-    navigate(to);
-  });
-  return btn;
+export function safeUrl(value, { image = false } = {}) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+
+  if (image && /^data:image\//i.test(raw)) return raw;
+  if (/^(https?:\/\/|mailto:)/i.test(raw)) return raw;
+  if (/^#\//.test(raw)) return raw;
+  if (/^(\/|\.{1,2}\/|assets\/)/.test(raw)) return raw;
+  if (/^[\w.-]+\.[a-z]{2,}(\/|$)/i.test(raw)) return `https://${raw}`;
+  return "";
 }
 
-// Deterministic-ish random helpers used by the generative pages.
-export const rand = (min, max) => Math.random() * (max - min) + min;
+function normalizeProject(raw, index) {
+  const p = raw && typeof raw === "object" ? raw : {};
+  const tags = Array.isArray(p.tags)
+    ? p.tags
+    : String(p.tags || "").split(",");
+  return {
+    id: String(p.id || `p-${index}`),
+    title: String(p.title || "").trim(),
+    desc: String(p.desc || p.description || "").trim(),
+    lang: String(p.lang || p.language || "").trim(),
+    period: String(p.period || "").trim(),
+    url: String(p.url || "").trim(),
+    repo: String(p.repo || "").trim(),
+    private: Boolean(p.private),
+    image: String(p.image || "").trim(),
+    tags: tags.map((t) => String(t).trim()).filter(Boolean).slice(0, 10),
+    featured: Boolean(p.featured),
+  };
+}
+
+export function parseDeck(raw) {
+  const parsed = JSON.parse(raw);
+  const list = Array.isArray(parsed) ? parsed : parsed && parsed.projects;
+  if (!Array.isArray(list)) throw new Error("invalid shape");
+  return list
+    .map(normalizeProject)
+    .filter((p) => p.title);
+}
