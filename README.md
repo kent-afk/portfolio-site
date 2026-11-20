@@ -73,23 +73,27 @@ on the `gh-pages` branch; `main` is not the deployed site.
 | --- | --- | --- |
 | `title` | yes | Card title |
 | `desc` | no | Short description shown on the card |
-| `lang` | no | Stack label badge (e.g. `C#`, `Go`); also picks the dot colour |
+| `lang` | no | Stack label badge (e.g. `C#`, `Go`) |
 | `period` | no | Small date line, e.g. `Nov 2025 – Dec 2025` |
-| `url` | no | Live project URL — becomes the OPEN ↗ link |
-| `repo` | no | Repository URL — shown as REPO ↗ and used as fallback OPEN link |
+| `url` | no | Live project URL — becomes the LIVE link |
+| `repo` | no | Repository URL — shown as REPO and used as the title link |
 | `private` | no | Set `true` for private repositories; shows a PRIVATE badge and hides the repo link |
 | `image` | no | Cover image path, URL or data URI |
 | `tags` | no | Array of short tags |
-| `featured` | no | `true` pins the card to the red ★ FEATURED section |
+| `featured` | no | `true` pins the card to the SELECTED section |
 | `id` | no | Stable identifier; auto-derived from the position if omitted |
 
 Notes:
 
 - Order matters: cards appear in array order (featured first, then the rest).
 - Cover images live in the repo, e.g. `assets/projects/cover.webp`. The image
-  is hidden automatically if it fails to load.
+  is hidden automatically if it fails to load; the concept covers carry a
+  CONCEPT badge so they are not mistaken for real screenshots.
+- Each cover needs an `880px` companion next to the 1400px source
+  (`cover-880.webp`); the card uses it through `srcset` so scrolling does not
+  rasterise the full-size image.
 - The file must be valid JSON: no trailing commas, no comments. If it is
-  broken, the page shows a SYNC ERROR state with a link to the file.
+  broken, the page shows a LOAD FAILED state with a retry button.
 
 ### Workflow A — edit on GitHub (no terminal)
 
@@ -113,13 +117,14 @@ git push
 
 `sw.js` caches the app shell, page modules, CSS and static assets after the
 first visit. Navigation, `data/projects.json`, JS and CSS use network-first;
-same-origin images and audio use cache-first. Google Fonts are cross-origin
-and are not cached.
+same-origin images and fonts use cache-first. Fonts are self-hosted in
+`assets/fonts` and requested only as needed. Audio is left to the browser
+HTTP cache because media responses are 206 range requests, which the Cache
+API cannot store.
 
-When you replace an image or audio file at the same path, bump
-`CACHE_VERSION` in `sw.js`; cache-first entries only refresh when the version
-changes. JS/CSS are fetched from the network on each visit, so they do not
-need a version bump to update.
+When you replace an image at the same path, bump `CACHE_VERSION` in `sw.js`;
+cache-first entries only refresh when the version changes. JS/CSS are fetched
+from the network on each visit, so they do not need a version bump to update.
 
 Page stylesheets and page modules are requested with `?v=<ASSET_VERSION>` from
 `js/router.js`. Bump that constant when a page CSS or JS file changes so a
@@ -154,27 +159,30 @@ index.html
 data/
   projects.json     project deck source of truth (edit to publish projects)
 css/
+  fonts.css         self-hosted @font-face subsets
   base.css          global tokens, cursor, scanlines
+  intro.css         entry gate
   home.css          main menu
-  projects.css      read-only project deck
+  projects.css      read-only project index
   resume.css        resume + print styles
   about.css         about section bars
 js/
   app.js            boot
   router.js         hash router
+  intro.js          entry gate
   sound.js          synthesized UI SFX + soundtrack
   transitions.js    page wipes
   cursor.js         custom cursor
-  audio-toggle.js   mute button
+  audio-toggle.js   sound toggle
   ui.js             escape, URL and deck parsing helpers
   pages/
     home.js
-    projects.js     fetches data/projects.json and renders cards
+    projects.js     fetches data/projects.json and renders the index
     resume.js
     about.js
 test/
   ui.test.js        helper tests
 design/
   stageshow/        source scenes for the featured project covers
-assets/             artwork, audio, project covers and the downloadable resume
+assets/             artwork, audio, fonts, project covers and the resume
 ```

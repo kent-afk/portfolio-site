@@ -8,6 +8,7 @@ export function initCursor() {
   const dot = document.createElement("div");
   dot.id = "cursor-dot";
   document.body.appendChild(dot);
+  document.body.classList.add("cursor-custom");
 
   let frame = 0;
   let x = -100;
@@ -35,6 +36,7 @@ export function initCursor() {
     document.removeEventListener("pointermove", move);
     document.removeEventListener("pointerover", over);
     if (document.body.contains(dot)) document.body.removeChild(dot);
+    document.body.classList.remove("cursor-custom");
   };
 }
 

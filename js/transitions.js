@@ -8,7 +8,7 @@
 const VARIANTS = {
   home: {
     cls: "trans-default",
-    layers: ["#080806", "#FF5500", "#F4F1EA"],
+    layers: ["#080806", "#E60012", "#F4F1EA"],
     delayStep: 0.05,
     duration: 440,
     keyframes: [
@@ -21,7 +21,7 @@ const VARIANTS = {
   },
   slash: {
     cls: "trans-slash",
-    layers: ["#FF5500", "#FF7A22", "#F4F1EA"],
+    layers: ["#E60012", "#FF3B4E", "#F4F1EA"],
     delayStep: 0.04,
     duration: 550,
     keyframes: [
@@ -36,7 +36,7 @@ const VARIANTS = {
     cls: "trans-about",
     layers: [
       { color: "#0B0B09", top: "-18vh", left: "-16vw", width: "90vw" },
-      { color: "#FF5500", top: "28vh", left: "-10vw", width: "74vw" },
+      { color: "#E60012", top: "28vh", left: "-10vw", width: "74vw" },
       { color: "#F4F1EA", top: "66vh", left: "-14vw", width: "84vw" },
     ],
     delayStep: 0.05,
@@ -52,7 +52,7 @@ const VARIANTS = {
     cls: "trans-vert",
     layers: [
       { color: "#080806", left: "68vw", width: "28vw" },
-      { color: "#FF5500", left: "78vw", width: "16vw" },
+      { color: "#E60012", left: "78vw", width: "16vw" },
       { color: "#F4F1EA", left: "88vw", width: "8vw" },
     ],
     delayStep: 0.06,

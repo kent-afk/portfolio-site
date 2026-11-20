@@ -1,11 +1,13 @@
 // Offline-first cache for the static portfolio. Bump CACHE_VERSION when
-// replacing cache-first assets (images/audio) so returning visitors get them.
+// replacing cache-first assets (images) so returning visitors get them.
 
-const CACHE_VERSION = "ak-portfolio-v2026-11-02-6";
+const CACHE_VERSION = "ak-portfolio-v2026-11-20-19";
 const CORE = [
   "./",
   "./index.html",
+  "./css/fonts.css",
   "./css/base.css",
+  "./css/intro.css",
   "./css/home.css",
   "./css/projects.css",
   "./css/resume.css",
@@ -24,8 +26,6 @@ const CORE = [
   "./assets/file.webp",
   "./assets/favicon.svg",
   "./data/projects.json",
-  "./assets/BackendSoftwareEngineer_Resume_EN.docx",
-  "./assets/BackendSoftwareEngineer_Resume_RU.docx",
 ];
 
 const scopeUrl = (path) => new URL(path, self.registration.scope).toString();
@@ -38,10 +38,18 @@ async function cachePut(cache, request, response) {
   }
 }
 
+async function precache(cache, path) {
+  const url = scopeUrl(path);
+  // The HTTP cache can still hold the previous deploy; force the network so a
+  // CACHE_VERSION bump actually refreshes the shell.
+  const response = await fetch(url, { cache: "reload" });
+  if (response.ok) await cache.put(url, response);
+}
+
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_VERSION);
-    await Promise.allSettled(CORE.map((path) => cache.add(scopeUrl(path))));
+    await Promise.allSettled(CORE.map((path) => precache(cache, path)));
     await self.skipWaiting();
   })());
 });
@@ -63,11 +71,15 @@ self.addEventListener("activate", (event) => {
 async function networkFirst(request, fallbackPath) {
   const cache = await caches.open(CACHE_VERSION);
   try {
-    const response = await fetch(request);
+    // Revalidate with the server; the HTTP cache alone can serve a stale JS
+    // file for the rest of its max-age.
+    const response = await fetch(request, { cache: "no-cache" });
     if (response.ok) await cachePut(cache, request, response);
     return response;
   } catch {
-    const cached = await cache.match(request);
+    // Page modules and stylesheets carry ?v=; fall back to the precached
+    // unversioned copy when the network is unavailable.
+    const cached = await cache.match(request, { ignoreSearch: true });
     if (cached) return cached;
     if (fallbackPath) {
       const fallback = await cache.match(scopeUrl(fallbackPath));
@@ -81,7 +93,7 @@ async function cacheFirst(request) {
   const cache = await caches.open(CACHE_VERSION);
   const cached = await cache.match(request);
   if (cached) return cached;
-  const response = await fetch(request);
+  const response = await fetch(request, { cache: "reload" });
   if (response.ok) await cachePut(cache, request, response);
   return response;
 }
@@ -125,7 +137,9 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (["image", "audio", "font"].includes(request.destination)) {
+  // Audio arrives as 206 range responses, which the Cache API cannot store;
+  // leave it to the browser HTTP cache.
+  if (["image", "font"].includes(request.destination)) {
     event.respondWith(cacheFirst(request));
     return;
   }

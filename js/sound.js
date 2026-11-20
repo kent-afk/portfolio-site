@@ -2,8 +2,8 @@
 // Reverse-engineered from the reference: every cue is generated with
 // oscillators/noise buffers, no audio files required for the effects.
 
-const SOUNDTRACK_OPUS = "assets/menu-soundtrack.opus";
-const SOUNDTRACK_MP3 = "assets/menu-soundtrack.mp3";
+const SOUNDTRACK_OPUS = "assets/menu-soundtrack.opus?v=2";
+const SOUNDTRACK_MP3 = "assets/menu-soundtrack.mp3?v=2";
 const TRACK_VOLUME = 0.22;
 const FADE_IN_MS = 2200;
 const FADE_OUT_MS = 1400;
@@ -12,6 +12,7 @@ class SoundEngine {
   constructor() {
     this._ctx = null;
     this._enabled = true;
+    this._unlocked = false;
     this._vol = 0.55;
     this._track = null;
     this._trackFade = null;
@@ -45,6 +46,7 @@ class SoundEngine {
 
   _onGesture() {
     this._gestureTypes.forEach((type) => document.removeEventListener(type, this._onGesture));
+    this._unlocked = true;
     const ctx = this._ctx_get();
     if (ctx.state === "suspended") ctx.resume();
     // A click can land before the page's 400 ms soundtrack timer, so create
@@ -58,10 +60,10 @@ class SoundEngine {
     const el = new Audio();
     el.src = el.canPlayType('audio/ogg; codecs="opus"') ? SOUNDTRACK_OPUS : SOUNDTRACK_MP3;
     el.loop = true;
-    el.preload = "auto";
+    el.preload = "none";
     el.volume = 0;
     el.addEventListener("error", () => {
-      if (!el.src.endsWith(".opus")) return;
+      if (!el.src.includes(".opus")) return;
       el.src = SOUNDTRACK_MP3;
       el.load();
       if (this._inMenuZone && this._enabled) this._startTrack();
@@ -70,7 +72,7 @@ class SoundEngine {
   }
 
   _startTrack() {
-    if (!this._track || !this._enabled) return;
+    if (!this._track || !this._enabled || !this._unlocked) return;
     clearInterval(this._trackFade);
     this._track.muted = false;
     if (this._track.paused) {
@@ -130,6 +132,7 @@ class SoundEngine {
   }
 
   ensurePlaying() {
+    this._unlocked = true;
     this._inMenuZone = true;
     this._ensureTrack();
     if (this._enabled) this._startTrack();

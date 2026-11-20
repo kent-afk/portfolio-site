@@ -1,6 +1,9 @@
 import { sound } from "../sound.js";
 
-// HOME — Persona-style skewed main menu with triangle selection highlight.
+// HOME — Persona-style main menu. Skewed rows, a red selection wedge and a
+// single white slab keep the game-menu feel while staying readable at every
+// width. The visible nameplate is the identity anchor; the intro only gates
+// the soundtrack.
 
 const BG = "assets/file.webp";
 
@@ -13,12 +16,8 @@ const NAV_ITEMS = [
 const LINK_ITEMS = [
   { id: "github", label: "GITHUB", href: "https://github.com/kent-afk", fontSize: 52, offsetX: 8, offsetY: 4, skewX: -5, skewY: 4 },
   { id: "linkedin", label: "LINKEDIN", href: "https://www.linkedin.com/in/alexander-k-93a1353bb/", fontSize: 52, offsetX: 18, offsetY: 2, skewX: -9, skewY: -4 },
-  { id: "email", label: "EMAIL", href: "mailto:a.Korenchuk2026@outlook.com", fontSize: 52, offsetX: 12, offsetY: 3, skewX: -4, skewY: 6 },
+  { id: "email", label: "EMAIL", href: "mailto:a.korenchuk2026@outlook.com", fontSize: 52, offsetX: 12, offsetY: 3, skewX: -4, skewY: 6 },
 ];
-
-function clip(o, c) {
-  return `polygon(0px 0px, ${o}px ${c * 0.5}px, 0px ${c}px)`;
-}
 
 export default function home(ctx) {
   const { root, navigate } = ctx;
@@ -27,7 +26,7 @@ export default function home(ctx) {
     ...LINK_ITEMS.map((n) => ({ ...n, type: "link" })),
   ];
 
-  const screen = document.createElement("div");
+  const screen = document.createElement("main");
   screen.className = "screen home-screen";
   screen.style.backgroundImage = `url(${BG})`;
   screen.style.backgroundSize = "cover";
@@ -36,23 +35,19 @@ export default function home(ctx) {
 
   screen.innerHTML = `
     <div class="scanlines" aria-hidden="true"></div>
-    <div class="home-hud-tl" aria-hidden="true">
-      <span class="home-hud-item">EDITION 01</span>
-      <span class="home-hud-item">2026</span>
-      <span class="home-hud-item home-hud-available">★ AVAILABLE</span>
+    <div class="home-nametag">
+      <h1 class="home-nametag-name">ALEXANDER KORENCHUK</h1>
+      <span class="home-nametag-role">BACKEND &amp; CLOUD ENGINEERING STUDENT</span>
+      <a class="home-nametag-mail" href="mailto:a.korenchuk2026@outlook.com" data-hover="true">a.korenchuk2026@outlook.com</a>
     </div>
     <div class="home-hud-tr" aria-hidden="true">
       <span class="home-hud-item">SAINT PETERSBURG · RU</span>
-      <span class="home-hud-item">BACKEND · CLOUD · SOFTWARE</span>
+      <span class="home-hud-item home-hud-available">AVAILABLE FOR INTERNSHIPS</span>
     </div>
   `;
 
   const overlay = document.createElement("div");
   overlay.className = "menu-overlay";
-
-  const ghost = document.createElement("div");
-  ghost.className = "menu-ghost";
-  ghost.setAttribute("aria-hidden", "true");
 
   const nav = document.createElement("nav");
   nav.className = "menu-nav";
@@ -68,9 +63,10 @@ export default function home(ctx) {
       a.rel = "noopener noreferrer";
     }
     a.className = "menu-row" + (isLink ? " menu-row--link" : "");
+    a.style.setProperty("--fs", item.fontSize + "px");
     a.style.marginRight = item.offsetX + "px";
     a.style.marginTop = item.offsetY + "px";
-    a.style.transitionDelay = index * 75 + "ms";
+    a.style.transitionDelay = index * 40 + "ms";
     a.dataset.hover = "true";
 
     const glow = document.createElement("div");
@@ -80,59 +76,31 @@ export default function home(ctx) {
     skew.className = "menu-skew";
     skew.style.transform = `skewX(${item.skewX}deg) skewY(${item.skewY}deg)`;
 
-    const o = item.label.length * item.fontSize * 0.56 + (isLink ? 60 : 80);
-    const c = item.fontSize * 0.94;
-    const shape = clip(o, c);
-
     const tri = document.createElement("div");
     tri.className = "menu-tri" + (isLink ? " menu-tri--link" : "");
-    tri.style.width = o + "px";
-    tri.style.height = c + "px";
-    tri.style.clipPath = shape;
+    tri.setAttribute("aria-hidden", "true");
 
     const hl = document.createElement("div");
     hl.className = "menu-highlight";
-    hl.style.width = o + "px";
-    hl.style.height = c + "px";
-    hl.style.clipPath = shape;
+    hl.setAttribute("aria-hidden", "true");
 
     const wrap = document.createElement("div");
     wrap.className = "menu-label-wrap";
 
-    const labelDark = document.createElement("span");
-    labelDark.className = "menu-label menu-label-dark" + (isLink ? " menu-label--link" : "");
-    labelDark.style.fontSize = item.fontSize + "px";
-    labelDark.textContent = item.label;
+    const label = document.createElement("span");
+    label.className = "menu-label menu-label-dark" + (isLink ? " menu-label--link" : "");
+    label.textContent = item.label;
 
-    const labelBright = document.createElement("span");
-    labelBright.className = "menu-label menu-label-bright";
-    labelBright.setAttribute("aria-hidden", "true");
-    labelBright.style.fontSize = item.fontSize + "px";
-    labelBright.style.clipPath = shape;
-    labelBright.textContent = item.label;
-
-    wrap.appendChild(labelDark);
-    wrap.appendChild(labelBright);
+    wrap.appendChild(label);
     skew.appendChild(tri);
     skew.appendChild(hl);
     skew.appendChild(wrap);
     a.appendChild(glow);
     a.appendChild(skew);
 
-    let badge = null;
-    if (isLink) {
-      badge = document.createElement("span");
-      badge.className = "menu-ext-badge";
-      badge.setAttribute("aria-hidden", "true");
-      badge.textContent = "↗";
-      badge.style.display = "none";
-      a.appendChild(badge);
-    }
+    rows.push({ a, wrap, item, index, isLink });
 
-    const refs = { a, tri, hl, wrap, badge, item, index, isLink };
-    rows.push(refs);
-
-    a.addEventListener("mouseenter", () => { select(index); focusRow(index); });
+    a.addEventListener("mouseenter", () => select(index));
     a.addEventListener("focus", () => select(index));
     a.addEventListener("click", (e) => {
       if (!isLink) {
@@ -156,55 +124,31 @@ export default function home(ctx) {
 
   LINK_ITEMS.forEach((item, i) => nav.appendChild(buildRow(item, NAV_ITEMS.length + i, true)));
 
-  overlay.appendChild(ghost);
   const stripe = document.createElement("div");
   stripe.className = "stripe-r";
   stripe.setAttribute("aria-hidden", "true");
   const stripe2 = document.createElement("div");
   stripe2.className = "stripe-r2";
   stripe2.setAttribute("aria-hidden", "true");
+
   overlay.appendChild(stripe);
   overlay.appendChild(stripe2);
   overlay.appendChild(nav);
-
   screen.appendChild(overlay);
-
-  const version = document.createElement("div");
-  version.className = "home-version";
-  version.setAttribute("aria-hidden", "true");
-  version.innerHTML = `<span>v1.1</span><span>PORTFOLIO</span>`;
-  screen.appendChild(version);
 
   root.appendChild(screen);
 
   let index = 0;
 
   function apply() {
-    const active = items[index];
-    ghost.textContent = active.label;
-
     rows.forEach((r) => {
       const isActive = r.index === index;
-      const w = Math.abs(r.index - index);
-      const labelOpacity = isActive ? 1 : Math.max(r.isLink ? 0.32 : 0.42, 1 - w * (r.isLink ? 0.22 : 0.24));
+      const distance = Math.abs(r.index - index);
+      const labelOpacity = isActive ? 1 : Math.max(r.isLink ? 0.72 : 0.86, 1 - distance * (r.isLink ? 0.14 : 0.16));
 
       r.a.classList.toggle("active", isActive);
-      if (isActive) r.a.setAttribute("aria-current", "page");
-      else r.a.removeAttribute("aria-current");
-
-      r.hl.style.transform = `translateY(-50%) scaleX(${isActive ? 1 : 0})`;
       r.wrap.style.opacity = labelOpacity;
-
-      if (isActive) {
-        r.tri.classList.remove("pop");
-        void r.tri.offsetWidth; // force reflow so the pop animation restarts
-        r.tri.classList.add("pop");
-      } else {
-        r.tri.classList.remove("pop");
-      }
-      if (r.badge) r.badge.style.display = isActive ? "" : "none";
     });
-
   }
 
   function select(i) {
@@ -236,7 +180,7 @@ export default function home(ctx) {
   const mountTimer = setTimeout(() => {
     rows.forEach((r) => r.a.classList.add("mounted"));
     sep.classList.add("mounted");
-  }, 900);
+  }, 200);
 
   sound.soundtrackEnter();
 

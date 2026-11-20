@@ -18,25 +18,10 @@ const GITHUB = "https://github.com/kent-afk";
 const LINKEDIN = "https://www.linkedin.com/in/alexander-k-93a1353bb/";
 const EMAIL = "a.korenchuk2026@outlook.com";
 
-// Decorative Persona-style mark in the resume banner (replaces the old
-// numeric metrics block).
-const ASCII_MARK = `⠀⢀⣤⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⣄
-⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⡉⠙⠻⢿⣿⣿⣿⣿⣿⢿⣦
-⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⡆⠀⠀⢻⣿⣿⣿⣿⡆⠈⢳⡄
-⣿⣿⣿⣿⣿⣿⣿⠈⢿⣿⣿⣿⣷⠖⠀⠀⣿⣿⣿⣿⣿⣄⠀⣿⡄
-⣿⣿⣿⣿⣿⣿⣿⣇⠀⢄⡙⠋⠻⡄⠀⣼⣿⣿⣿⣩⠟⠟⠀⣼⣿⡄
-⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣭⣤⣤⣴⣿⣿⣿⣿⣿⣿⣿⣦⣴⣿⣿⣷⠀
-⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⠿⠿⢿⣿⣿⣶⣶⣶⣶⣾⣿⣿⣿⣿⣿⣿⢰⣶⣄
-⣏⣉⣛⣛⣛⣛⣥⣶⣾⣿⣿⣿⣷⡝⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⣿⣿⡇
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⣿⠟⠀
-⡇⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢋⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠈⠁
-⡇⠀⠹⣿⣿⣿⡿⠿⠛⣋⣥⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿`;
-
 const RESUME = {
   en: {
     name: "Alexander Korenchuk",
-    kicker: "BACKEND · DATA · AI AGENTS · RESUME 2026",
+    kicker: "BACKEND · DATA · AI · 2026",
     role: "Backend Engineer Intern · C# / .NET · Architecture & Data",
     stack: "CLEAN ARCHITECTURE · C# · ASP.NET CORE · POSTGRESQL · DOCKER · AI AGENTS · MCP",
     tagline:
@@ -145,39 +130,33 @@ const RESUME = {
         items: ["xUnit", "pytest", "NSubstitute", "Git", "Swagger/OpenAPI"],
       },
     ],
-    focus: ["Architecture", "Data & SQL", "PostgreSQL", "Docker", "AI Agents", "MCP", "Cloud"],
     labels: {
       home: "HOME",
-      resume: "★ RESUME",
-      headSub: "BACKEND · DATA · AI AGENTS",
-      download: "↓ DOCX",
-      print: "⎙ PRINT / PDF",
+      resume: "RESUME",
+      headSub: "BACKEND · DATA · AI",
+      download: "DOCX",
+      print: "PRINT / PDF",
       langAria: "Resume language",
       summary: "Summary",
       projects: "Project Experience",
       education: "Education",
       contact: "Contact",
       stack: "Technical Stack",
-      focus: "Focus",
-      glance: "At a glance",
       email: "Email",
       linkedin: "LinkedIn",
       github: "GitHub",
       location: "Location",
       concentration: "Concentration",
       coursework: "Related coursework",
-      source: "SOURCE",
-      downloadDocx: "↓ DOWNLOAD DOCX",
-      printSave: "⎙ PRINT / SAVE PDF",
-      footerRole: "Backend · Data · AI",
-      footerLocation: "Saint Petersburg · RU",
-      graduation: "Expected graduation June 2029",
-      degreeLine: "Backend & Cloud Engineering",
+      downloadDocx: "DOWNLOAD DOCX",
+      printSave: "PRINT / PDF",
+      footerRole: "Backend / Data / AI",
+      footerLocation: "Saint Petersburg, RU",
     },
   },
   ru: {
     name: "Александр Коренчук",
-    kicker: "BACKEND · ДАННЫЕ · AI-АГЕНТЫ · РЕЗЮМЕ 2026",
+    kicker: "BACKEND · ДАННЫЕ · AI · 2026",
     role: "Backend-разработчик (стажёр) · C# / .NET · архитектура и данные",
     stack: "CLEAN ARCHITECTURE · C# · ASP.NET CORE · POSTGRESQL · DOCKER · AI-АГЕНТЫ · MCP",
     tagline:
@@ -282,46 +261,40 @@ const RESUME = {
         items: ["xUnit", "pytest", "NSubstitute", "Git", "Swagger/OpenAPI"],
       },
     ],
-    focus: ["Архитектура", "Данные и SQL", "PostgreSQL", "Docker", "AI-агенты", "MCP", "Cloud"],
     labels: {
       home: "НАЗАД",
-      resume: "★ РЕЗЮМЕ",
-      headSub: "BACKEND · ДАННЫЕ · AI-АГЕНТЫ",
-      download: "↓ DOCX",
-      print: "⎙ ПЕЧАТЬ / PDF",
+      resume: "РЕЗЮМЕ",
+      headSub: "BACKEND · ДАННЫЕ · AI",
+      download: "DOCX",
+      print: "ПЕЧАТЬ / PDF",
       langAria: "Язык резюме",
       summary: "О себе",
       projects: "Проекты",
       education: "Образование",
       contact: "Контакты",
       stack: "Технический стек",
-      focus: "Ключевые направления",
-      glance: "Кратко",
       email: "Email",
       linkedin: "LinkedIn",
       github: "GitHub",
       location: "Город",
       concentration: "Специализация",
       coursework: "Ключевые курсы",
-      source: "ИСТОЧНИК",
-      downloadDocx: "↓ СКАЧАТЬ DOCX",
-      printSave: "⎙ ПЕЧАТЬ / PDF",
-      footerRole: "Backend · Данные · AI",
-      footerLocation: "Санкт-Петербург · RU",
-      graduation: "Окончание: июнь 2029",
-      degreeLine: "Backend и облачная разработка",
+      downloadDocx: "СКАЧАТЬ DOCX",
+      printSave: "ПЕЧАТЬ / PDF",
+      footerRole: "Backend / Данные / AI",
+      footerLocation: "Санкт-Петербург, RU",
     },
   },
 };
 
-function sectionHead(label, num) {
-  return `<h2 class="rs-h"><span class="rs-h-bar"></span><span>${esc(label)}</span><span class="rs-h-rule"></span><span class="rs-h-n">${esc(num)}</span></h2>`;
+function sectionHead(label) {
+  return `<h2 class="rs-h"><span class="rs-h-bar"></span><span>${esc(label)}</span><span class="rs-h-rule"></span></h2>`;
 }
 
 function renderProject(project) {
   const link = project.link
     ? project.link.url
-      ? `<a href="${esc(project.link.url)}" target="_blank" rel="noopener noreferrer">${esc(project.link.label)} ↗</a>`
+      ? `<a href="${esc(project.link.url)}" target="_blank" rel="noopener noreferrer">${esc(project.link.label)}</a>`
       : esc(project.link.label)
     : "";
   return `
@@ -369,7 +342,6 @@ export default function resume(ctx) {
         <div class="rs-skill">${group.items.map((item) => `<span>${esc(item)}</span>`).join("")}</div>
       </div>`).join("");
 
-    const focus = data.focus.map((item) => `<span>${esc(item)}</span>`).join("");
     const coursework = data.education.coursework.map((item) => `<span>${esc(item)}</span>`).join("");
     const nameParts = data.name.split(" ");
     const firstName = nameParts.shift() || "";
@@ -383,6 +355,7 @@ export default function resume(ctx) {
           <span class="rs-head-sub">${esc(t.headSub)}</span>
         </div>
         <div class="rs-head-actions">
+          <nav class="rs-head-nav" aria-label="Site"><a href="#/projects" data-hover="true">PROJECTS</a><a href="#/about" data-hover="true">ABOUT</a></nav>
           <div class="rs-lang-switch" role="group" aria-label="${esc(t.langAria)}">
             <button class="rs-lang-btn${lang === "en" ? " is-active" : ""}" type="button" data-lang="en" aria-pressed="${lang === "en"}" data-hover="true">EN</button>
             <button class="rs-lang-btn${lang === "ru" ? " is-active" : ""}" type="button" data-lang="ru" aria-pressed="${lang === "ru"}" data-hover="true">RU</button>
@@ -392,7 +365,7 @@ export default function resume(ctx) {
         </div>
       </header>
 
-      <div class="rs-scroll">
+      <main class="rs-scroll">
         <article class="rs-sheet" aria-label="${esc(t.resume)} — ${esc(data.name)}">
           <div class="rs-banner">
             <div class="rs-banner-main">
@@ -403,24 +376,22 @@ export default function resume(ctx) {
               <p class="rs-tagline">${esc(data.tagline)}</p>
               <p class="rs-status"><span class="rs-status-dot"></span>${esc(data.availability)}</p>
             </div>
-            <pre class="rs-ascii" aria-hidden="true">${ASCII_MARK}</pre>
-            <span class="rs-banner-mark" aria-hidden="true">AK</span>
           </div>
 
           <div class="rs-body">
-            <main class="rs-main">
+            <div class="rs-main">
               <section class="rs-sec">
-                ${sectionHead(t.summary, "01")}
+                ${sectionHead(t.summary)}
                 <p class="rs-summary">${esc(data.summary)}</p>
               </section>
 
               <section class="rs-sec">
-                ${sectionHead(t.projects, "02")}
+                ${sectionHead(t.projects)}
                 <div class="rs-jobs">${projects}</div>
               </section>
 
               <section class="rs-sec">
-                ${sectionHead(t.education, "03")}
+                ${sectionHead(t.education)}
                 <div class="rs-edu">
                   <div>
                     <h3>${esc(data.education.school)}</h3>
@@ -432,35 +403,24 @@ export default function resume(ctx) {
                 <p class="rs-edu-note"><strong>${esc(t.coursework)}:</strong></p>
                 <div class="rs-course">${coursework}</div>
               </section>
-            </main>
+            </div>
 
-            <aside class="rs-side">
+            <div class="rs-side">
               <section class="rs-side-card">
                 <h2 class="rs-side-title">${esc(t.contact)}</h2>
                 <div class="rs-contact">
                   <a href="mailto:${EMAIL}"><span>${esc(t.email)}</span><span>${esc(EMAIL)}</span></a>
-                  <a href="${LINKEDIN}" target="_blank" rel="noopener noreferrer"><span>${esc(t.linkedin)}</span><span>in/alexander-k-93a1353bb ↗</span></a>
-                  <a href="${GITHUB}" target="_blank" rel="noopener noreferrer"><span>${esc(t.github)}</span><span>@kent-afk ↗</span></a>
+                  <a href="${LINKEDIN}" target="_blank" rel="noopener noreferrer"><span>${esc(t.linkedin)}</span><span>in/alexander-k-93a1353bb</span></a>
+                  <a href="${GITHUB}" target="_blank" rel="noopener noreferrer"><span>${esc(t.github)}</span><span>@kent-afk</span></a>
                   <span class="rs-contact-row"><span>${esc(t.location)}</span><span>${esc(data.location)}</span></span>
                 </div>
-                <p class="rs-side-note">★ ${esc(data.availability)}</p>
               </section>
 
               <section class="rs-side-card">
                 <h2 class="rs-side-title">${esc(t.stack)}</h2>
                 ${skillGroups}
               </section>
-
-              <section class="rs-side-card rs-side-card--focus">
-                <h2 class="rs-side-title">${esc(t.focus)}</h2>
-                <div class="rs-focus">${focus}</div>
-              </section>
-
-              <section class="rs-side-card rs-side-card--note">
-                <h2 class="rs-side-title">${esc(t.glance)}</h2>
-                <p>${esc(data.education.school)} · ${esc(data.education.degree)}<br>${esc(t.graduation)}<br>${esc(t.degreeLine)}</p>
-              </section>
-            </aside>
+            </div>
           </div>
 
           <footer class="rs-sheet-foot">
@@ -471,13 +431,12 @@ export default function resume(ctx) {
         </article>
 
         <div class="rs-page-foot">
-          <span>${esc(t.source)} · ${esc(docxName)}</span>
           <div class="rs-page-actions">
             <a href="${docx}" download="${docxName}" data-hover="true">${esc(t.downloadDocx)}</a>
             <button type="button" data-print data-hover="true">${esc(t.printSave)}</button>
           </div>
         </div>
-      </div>`;
+      </main>`;
 
     document.documentElement.lang = lang;
     document.title = lang === "ru"

@@ -25,7 +25,7 @@ const SECTIONS = [
   },
   {
     id: "about", label: "ABOUT ME", role: "02", color: "#FF5500",
-    stats: [{ tag: "PHILOSOPHY", value: "CLARITY", color: "#FF5500" }, { tag: "DRIVE", value: "CURIOSITY", color: "#FF7A22" }],
+    stats: [{ tag: "BASED", value: "ST PETERSBURG", color: "#FF5500" }, { tag: "STATUS", value: "OPEN", color: "#FF7A22" }],
     content: {
       title: "ABOUT ME",
       body: "I’m Alexander, a software engineering student in Saint Petersburg. I started with C++ and small desktop projects, then moved into backend work because I enjoy the part users never see: business rules, persistence, failure handling and deployment.\n\nMy recent project is an AI assistant deployed on Yandex Cloud. It has real infrastructure behind it — a VM, private network, security group, Docker Compose, health checks and CI — not just a chat demo. I also built a warehouse REST API and a C# messaging system with 20 tests.\n\nOutside code, I’m into powerlifting, music and comics. I like finishing things: understand the problem, build the smallest useful version, test it, write a clear README and ship.",
@@ -44,12 +44,12 @@ const SECTIONS = [
     stats: [{ tag: "PROJECTS", value: "06", color: "#AAFF00" }, { tag: "TESTS", value: "127", color: "#88DD00" }],
     content: {
       title: "PRACTICAL EXPERIENCE",
-      body: "AI TELEGRAM ASSISTANT\nAI assistant deployed to Yandex Cloud: VM, VPC, security group, Docker Compose, health checks and CI. Python, PostgreSQL, OpenRouter, 65 pytest tests. Private repo available on request.\n\nMETAL ROLL WAREHOUSE API\nREST API with 5 endpoints, 15 warehouse statistics, EF Core, PostgreSQL/SQLite, Docker Compose and 11 xUnit tests. Public repo: kent-afk/rolls-storage-cs.\n\nCORPORATE MESSAGE DISTRIBUTION SYSTEM\n.NET 8 messaging system built with four structural design patterns and 20 xUnit tests. Public repo: kent-afk/Corporate-Message-Distribution-System.\n\nALSO IN THE DECK\nCloud Manager - identity microservice (in progress), EVE Mining & Colony Simulator (private), Transport Route Simulator.",
+      body: "AI TELEGRAM ASSISTANT\nAI assistant deployed to Yandex Cloud: VM, VPC, security group, Docker Compose, health checks and CI. Python, PostgreSQL, OpenRouter, 65 pytest tests. Private repo available on request.\n\nMETAL ROLL WAREHOUSE API\nREST API with 5 endpoints, 15 warehouse statistics, EF Core, PostgreSQL/SQLite, Docker Compose and 11 xUnit tests. Public repo: kent-afk/rolls-storage-cs.\n\nCORPORATE MESSAGE DISTRIBUTION SYSTEM\n.NET 8 messaging system built with four structural design patterns and 20 xUnit tests. Public repo: kent-afk/Corporate-Message-Distribution-System.\n\nOTHER PROJECTS\nCloud Manager - identity microservice (in progress), EVE Mining & Colony Simulator (private), Transport Route Simulator.",
     },
   },
   {
     id: "skills", label: "SKILLS", role: "05", color: "#db1398",
-    stats: [{ tag: "LANGUAGES", value: "C# · SQL · PY", color: "#db1398" }, { tag: "TOOLS", value: ".NET · DOCKER", color: "#00e1ff" }],
+    stats: [{ tag: "LANGUAGES", value: "C# / PY / SQL", color: "#db1398" }, { tag: "TOOLS", value: ".NET / DOCKER", color: "#00e1ff" }],
     content: {
       title: "SKILLS & COMPETENCIES",
       body: "LANGUAGES\nC# · SQL · Python · C++ · C\n\nBACKEND\nASP.NET Core · .NET 8 · EF Core · REST APIs · LINQ · async/await\n\nPYTHON\naiogram · asyncpg · aiohttp\n\nCLOUD & DEVOPS\nYandex Cloud · Docker · Docker Compose · GitHub Actions · Linux · SSH\n\nDATA & TESTING\nPostgreSQL · SQLite · xUnit · pytest · NSubstitute\n\nARCHITECTURE & TOOLS\nClean Architecture · SOLID · GoF · Git · Swagger/OpenAPI",
@@ -77,27 +77,26 @@ export default function about(ctx) {
   bg.style.backgroundImage = `url(${BG})`;
   screen.appendChild(bg);
 
-  const scan = document.createElement("div");
-  scan.className = "scanlines";
-  scan.setAttribute("aria-hidden", "true");
-  screen.appendChild(scan);
-
-  const header = document.createElement("div");
+  const header = document.createElement("header");
   header.className = "about-header";
   const backBtn = document.createElement("button");
   backBtn.className = "about-back";
   backBtn.dataset.hover = "true";
   backBtn.textContent = "BACK";
-  const headerT = document.createElement("span");
+  const headerT = document.createElement("h1");
   headerT.className = "about-header-t";
   headerT.textContent = "ABOUT ME";
   header.appendChild(backBtn);
   header.appendChild(headerT);
+  const nav = document.createElement("nav");
+  nav.className = "about-nav";
+  nav.setAttribute("aria-label", "Site");
+  nav.innerHTML = `<a href="#/projects" data-hover="true">PROJECTS</a><a href="#/resume" data-hover="true">RESUME</a>`;
+  header.appendChild(nav);
   screen.appendChild(header);
 
-  const bars = document.createElement("div");
+  const bars = document.createElement("main");
   bars.className = "about-bars";
-  bars.setAttribute("role", "group");
   bars.setAttribute("aria-label", "Sections");
 
   const barRefs = [];
@@ -111,16 +110,15 @@ export default function about(ctx) {
     outer.setAttribute("aria-controls", "about-reveal-panel");
     outer.dataset.hover = "true";
     outer.style.setProperty("--bar-color", s.color);
-    outer.style.pointerEvents = "all";
-    outer.style.cursor = "pointer";
+    outer.style.transitionDelay = a * 80 + "ms";
 
     const accent = document.createElement("div");
     accent.className = "about-bar-accent";
-    accent.style.background = s.color;
+    accent.setAttribute("aria-hidden", "true");
 
     const bar = document.createElement("div");
     bar.className = "about-bar";
-    bar.innerHTML = `<div class="about-bar-fill"></div><div class="about-bar-shade"></div>`;
+    bar.innerHTML = `<div class="about-bar-fill"></div>`;
 
     const content = document.createElement("div");
     content.className = "about-bar-content";
@@ -140,8 +138,7 @@ export default function about(ctx) {
       stat.className = "about-stat";
       const tag = document.createElement("span");
       tag.className = "about-stat-tag";
-      tag.style.color = st.color;
-      tag.style.borderColor = st.color;
+      tag.style.setProperty("--tag-color", st.color);
       tag.textContent = st.tag;
       const val = document.createElement("span");
       val.className = "about-stat-val";
@@ -163,57 +160,41 @@ export default function about(ctx) {
     outer.appendChild(bar);
     bars.appendChild(outer);
 
-    outer.addEventListener("click", () => reveal(a));
+    outer.addEventListener("click", () => openSection(a));
     outer.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
-        reveal(a);
+        openSection(a);
       }
     });
     outer.addEventListener("mouseenter", () => {
-      if (open) return;
-      barRefs.forEach((b) => b.outer.classList.remove("hover-focus"));
-      outer.classList.add("hover-focus");
-      setIndex(a);
-      focusBar(a, true);
+      if (!open) setIndex(a);
     });
     outer.addEventListener("focus", () => {
-      if (open) return;
-      if (!hoverFocusActive) barRefs.forEach((b) => b.outer.classList.remove("hover-focus"));
-      setIndex(a);
+      if (!open) setIndex(a);
     });
 
-    barRefs.push({ outer, role, label, stats: [...stats.querySelectorAll(".about-stat-val")] });
+    barRefs.push({ outer });
   });
   screen.appendChild(bars);
 
-  // Reveal + portrait (created once, toggled)
-  const dim = document.createElement("div");
-  dim.className = "about-dim";
-  dim.style.display = "none";
+  const dialog = document.createElement("dialog");
+  dialog.className = "about-dialog";
+  dialog.setAttribute("aria-labelledby", "about-reveal-title");
+  dialog.innerHTML = `
+    <div class="about-portrait-shell" aria-hidden="true">
+      <div class="about-portrait-placeholder"><img alt=""></div>
+    </div>
+    <div class="about-reveal" id="about-reveal-panel">
+      <button class="about-close" type="button" data-hover="true" aria-label="Close section">✕</button>
+      <div class="about-reveal-inner"><h2 class="about-reveal-title" id="about-reveal-title"></h2><div class="about-reveal-body"></div></div>
+    </div>`;
+  screen.appendChild(dialog);
 
-  const revealPanel = document.createElement("div");
-  revealPanel.className = "about-reveal";
-  revealPanel.id = "about-reveal-panel";
-  revealPanel.setAttribute("role", "dialog");
-  revealPanel.setAttribute("aria-modal", "true");
-  revealPanel.setAttribute("aria-labelledby", "about-reveal-title");
-  revealPanel.innerHTML = `
-    <button class="about-close" type="button" data-hover="true" aria-label="Close section">✕</button>
-    <div class="about-reveal-inner"><h2 class="about-reveal-title" id="about-reveal-title"></h2><div class="about-reveal-body"></div></div>`;
-  revealPanel.style.display = "none";
-
-  const closeBtn = revealPanel.querySelector(".about-close");
-  closeBtn.addEventListener("click", close);
-
-  const portrait = document.createElement("div");
-  portrait.className = "about-portrait-shell";
-  portrait.innerHTML = `<div class="about-portrait-placeholder"><img alt="Portrait"></div>`;
-  portrait.style.display = "none";
-
-  screen.appendChild(dim);
-  screen.appendChild(revealPanel);
-  screen.appendChild(portrait);
+  const revealPanel = dialog.querySelector(".about-reveal");
+  const portrait = dialog.querySelector(".about-portrait-shell");
+  const portraitImg = portrait.querySelector("img");
+  const closeBtn = dialog.querySelector(".about-close");
 
   const stripe = document.createElement("div");
   stripe.className = "stripe-r";
@@ -227,63 +208,21 @@ export default function about(ctx) {
   root.appendChild(screen);
 
   let index = 0;
-  let hoverFocusActive = false;
   let open = false;
   let opener = null;
 
-  function onDialogKeydown(event) {
-    if (event.key === "Escape") {
-      event.preventDefault();
-      if (open) close();
-      else goBack();
-      return;
-    }
-    if (open) {
-      if (event.key !== "Tab") return;
-      const focusables = [...revealPanel.querySelectorAll(
-        'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
-      )].filter((el) => el.getClientRects().length > 0);
-      if (!focusables.length) return;
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-      const active = document.activeElement;
-      if (event.shiftKey) {
-        if (active === first || !revealPanel.contains(active)) {
-          event.preventDefault();
-          last.focus();
-        }
-      } else if (active === last || !revealPanel.contains(active)) {
-        event.preventDefault();
-        first.focus();
-      }
-      return;
-    }
-    if (event.key !== "ArrowUp" && event.key !== "ArrowDown" && event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
-    if (event.target.closest("input, textarea, select, [contenteditable='true']")) return;
+  closeBtn.addEventListener("click", close);
+  dialog.addEventListener("cancel", (event) => {
     event.preventDefault();
-    const dir = event.key === "ArrowUp" || event.key === "ArrowLeft" ? -1 : 1;
-    const next = (index + dir + SECTIONS.length) % SECTIONS.length;
-    barRefs.forEach((b) => b.outer.classList.remove("hover-focus"));
-    setIndex(next);
-    focusBar(next);
-  }
-  document.addEventListener("keydown", onDialogKeydown);
-  window.addEventListener("resize", applyBars);
-  document.fonts?.ready.then(() => { if (document.body.contains(screen)) applyBars(); });
+    close();
+  });
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) close();
+  });
 
   function applyBars() {
     barRefs.forEach((b, a) => {
-      const isActive = a === index;
-      b.outer.classList.toggle("active", isActive);
-      b.role.style.color = isActive ? SECTIONS[a].color : "rgba(255,255,255,.15)";
-      b.label.style.color = isActive ? "#ffffff" : "rgba(255,255,255,.8)";
-      b.stats.forEach((sv) => { sv.style.color = isActive ? "#0a0a08" : "#fff"; });
-      if (isActive) {
-        const barRect = b.outer.getBoundingClientRect();
-        const labelRect = b.label.getBoundingClientRect();
-        const cut = barRect.width ? ((labelRect.right - barRect.left + 12) / barRect.width) * 100 : 24;
-        b.outer.style.setProperty("--cut", `${Math.min(72, Math.max(18, cut)).toFixed(2)}%`);
-      }
+      b.outer.classList.toggle("active", a === index);
     });
   }
 
@@ -293,47 +232,39 @@ export default function about(ctx) {
     applyBars();
   }
 
-  function focusBar(i, fromHover = false) {
-    const bar = barRefs[i]?.outer;
-    if (!bar) return;
-    hoverFocusActive = fromHover;
-    bar.focus({ preventScroll: true });
-    hoverFocusActive = false;
+  function focusBar(i) {
+    barRefs[i]?.outer.focus({ preventScroll: true });
   }
 
-  function reveal(i) {
+  function openSection(i) {
     sound.play("reveal");
     opener = barRefs[i]?.outer || document.activeElement;
     index = i;
-    barRefs.forEach((b) => b.outer.classList.remove("hover-focus"));
     applyBars();
     open = true;
-    const s = SECTIONS[i];
-    revealPanel.style.setProperty("--accent-color", s.color);
-    revealPanel.querySelector(".about-reveal-title").textContent = s.content.title;
-    revealPanel.querySelector(".about-reveal-body").textContent = s.content.body;
-    const portraitImg = portrait.querySelector("img");
+    const section = SECTIONS[i];
+    revealPanel.style.setProperty("--accent-color", section.color);
+    revealPanel.querySelector(".about-reveal-title").textContent = section.content.title;
+    revealPanel.querySelector(".about-reveal-body").textContent = section.content.body;
     const src = PORTRAITS[i];
+    const showPortrait = !!src && !window.matchMedia("(max-width: 900px)").matches;
     portraitImg.onerror = () => { portrait.style.display = "none"; };
-    revealPanel.classList.toggle("no-portrait", !src);
-    if (src) {
-      portraitImg.alt = s.label;
+    revealPanel.classList.toggle("no-portrait", !showPortrait);
+    if (showPortrait) {
+      portraitImg.alt = "";
       portraitImg.src = src;
       portrait.style.display = "";
     } else {
+      portraitImg.removeAttribute("src");
       portrait.style.display = "none";
     }
 
-    bars.classList.add("bars-disabled");
-    dim.style.display = "";
-    revealPanel.style.display = "";
-    backBtn.textContent = "CLOSE";
-    closeBtn.style.display = "";
-    // retrigger the mount animations
-    [revealPanel, portrait].forEach((el) => {
-      el.classList.remove("mounted");
-      void el.offsetWidth;
-      el.classList.add("mounted");
+    revealPanel.classList.remove("mounted");
+    portrait.classList.remove("mounted");
+    dialog.showModal();
+    requestAnimationFrame(() => {
+      revealPanel.classList.add("mounted");
+      if (showPortrait) portrait.classList.add("mounted");
     });
     closeBtn.focus({ preventScroll: true });
   }
@@ -342,28 +273,41 @@ export default function about(ctx) {
     if (!open) return;
     sound.play("close");
     open = false;
-    const returnTo = opener;
-    opener = null;
-    bars.classList.remove("bars-disabled");
-    dim.style.display = "none";
-    revealPanel.style.display = "none";
-    portrait.style.display = "none";
-    backBtn.textContent = "BACK";
-    closeBtn.style.display = "none";
-    if (returnTo) returnTo.focus({ preventScroll: true });
+    dialog.close();
+    revealPanel.classList.remove("mounted");
+    portrait.classList.remove("mounted");
+    if (opener) {
+      opener.focus({ preventScroll: true });
+      opener = null;
+    }
   }
 
   function goBack() {
-    if (open) {
-      close();
-    } else {
+    if (open) close();
+    else {
       sound.play("back");
       navigate("/");
     }
   }
 
+  function onKeydown(event) {
+    if (open) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      goBack();
+      return;
+    }
+    if (event.key !== "ArrowUp" && event.key !== "ArrowDown" && event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    if (event.target.closest("input, textarea, select, [contenteditable='true']")) return;
+    event.preventDefault();
+    const dir = event.key === "ArrowUp" || event.key === "ArrowLeft" ? -1 : 1;
+    const next = (index + dir + SECTIONS.length) % SECTIONS.length;
+    setIndex(next);
+    focusBar(next);
+  }
+  document.addEventListener("keydown", onKeydown);
+
   backBtn.addEventListener("click", goBack);
-  dim.addEventListener("click", close);
 
   applyBars();
   sound.soundtrackEnter();
@@ -374,7 +318,6 @@ export default function about(ctx) {
 
   return () => {
     clearTimeout(mountTimer);
-    document.removeEventListener("keydown", onDialogKeydown);
-    window.removeEventListener("resize", applyBars);
+    document.removeEventListener("keydown", onKeydown);
   };
 }
